@@ -40,6 +40,7 @@ export function createTestDatabase() {
 export async function resetTestDatabase(client: pg.Client) {
   await client.query(
     `truncate table
+       sessions,
        settlements,
        expense_splits,
        expenses,

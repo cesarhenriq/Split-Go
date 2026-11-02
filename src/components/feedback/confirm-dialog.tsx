@@ -20,7 +20,8 @@ export type ConfirmDialogProps = {
   cancelLabel?: string;
   tone?: "default" | "danger";
   loading?: boolean;
-  onConfirm: () => void;
+  onConfirm?: () => void;
+  formAction?: (formData: FormData) => void | Promise<void>;
 };
 
 export function ConfirmDialog({
@@ -33,7 +34,26 @@ export function ConfirmDialog({
   tone = "default",
   loading = false,
   onConfirm,
+  formAction,
 }: ConfirmDialogProps) {
+  const confirmButton = (
+    <Button
+      type={formAction ? "submit" : "button"}
+      variant={tone === "danger" ? "danger" : "default"}
+      onClick={
+        formAction
+          ? undefined
+          : () => {
+              onConfirm?.();
+              onOpenChange(false);
+            }
+      }
+      loading={loading}
+    >
+      {confirmLabel}
+    </Button>
+  );
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -51,17 +71,11 @@ export function ConfirmDialog({
           >
             {cancelLabel}
           </Button>
-          <Button
-            type="button"
-            variant={tone === "danger" ? "danger" : "default"}
-            onClick={() => {
-              onConfirm();
-              onOpenChange(false);
-            }}
-            loading={loading}
-          >
-            {confirmLabel}
-          </Button>
+          {formAction ? (
+            <form action={formAction}>{confirmButton}</form>
+          ) : (
+            confirmButton
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>

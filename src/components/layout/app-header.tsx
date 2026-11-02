@@ -16,14 +16,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { demoUser } from "@/config/demo";
 import { getBreadcrumbItems, getRouteTitle, routes } from "@/config/routes";
+import type { CurrentUser } from "@/lib/auth/types";
+import { getInitials } from "@/lib/user";
 
 export type AppHeaderProps = {
+  user: CurrentUser;
   onMenuToggle?: () => void;
 };
 
-export function AppHeader({ onMenuToggle }: AppHeaderProps) {
+export function AppHeader({ user, onMenuToggle }: AppHeaderProps) {
   const pathname = usePathname();
   const [logoutOpen, setLogoutOpen] = useState(false);
   const title = getRouteTitle(pathname);
@@ -82,21 +84,19 @@ export function AppHeader({ onMenuToggle }: AppHeaderProps) {
             aria-label="Abrir menu de perfil"
           >
             <Avatar
-              fallback={demoUser.initials}
-              alt={demoUser.name}
+              fallback={getInitials(user.name)}
+              alt={user.name}
               size="sm"
             />
             <div className="hidden text-left md:block">
-              <p className="text-sm font-medium leading-none">
-                {demoUser.name}
-              </p>
-              <p className="mt-1 text-meta text-neutral-500">
-                Dados de demonstração
+              <p className="text-sm font-medium leading-none">{user.name}</p>
+              <p className="mt-1 max-w-48 truncate text-meta text-neutral-500">
+                {user.email}
               </p>
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuLabel>Conta de demonstração</DropdownMenuLabel>
+            <DropdownMenuLabel>Minha conta</DropdownMenuLabel>
             <DropdownMenuItem asChild>
               <Link href={routes.dashboard.settings}>
                 <User className="mr-2 h-4 w-4" aria-hidden="true" />

@@ -5,6 +5,7 @@ import {
   groupInvitations,
   groupMembers,
   groups,
+  sessions,
   settlements,
   users,
 } from "./schema";
@@ -17,6 +18,7 @@ export const relations = defineRelations(
     groupInvitations,
     expenses,
     expenseSplits,
+    sessions,
     settlements,
   },
   (r) => ({
@@ -48,6 +50,10 @@ export const relations = defineRelations(
       settlementsReceived: r.many.settlements({
         from: r.users.id,
         to: r.settlements.receivedBy,
+      }),
+      sessions: r.many.sessions({
+        from: r.users.id,
+        to: r.sessions.userId,
       }),
     },
     groups: {
@@ -113,6 +119,12 @@ export const relations = defineRelations(
       }),
       user: r.one.users({
         from: r.expenseSplits.userId,
+        to: r.users.id,
+      }),
+    },
+    sessions: {
+      user: r.one.users({
+        from: r.sessions.userId,
         to: r.users.id,
       }),
     },

@@ -1,8 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { ConfirmDialog } from "@/components/feedback/confirm-dialog";
-import { routes } from "@/config/routes";
+import { logoutAction } from "@/features/auth/actions";
 
 export type LogoutDialogProps = {
   open: boolean;
@@ -10,17 +9,15 @@ export type LogoutDialogProps = {
 };
 
 export function LogoutDialog({ open, onOpenChange }: LogoutDialogProps) {
-  const router = useRouter();
-
   return (
     <ConfirmDialog
       open={open}
       onOpenChange={onOpenChange}
-      title="Encerrar sessão de demonstração?"
-      description="A autenticação ainda não está implementada. Para continuar explorando o layout, você será direcionado para a tela de login."
-      confirmLabel="Ir para o login"
-      cancelLabel="Continuar no app"
-      onConfirm={() => router.push(routes.auth.login)}
+      title="Sair da conta?"
+      description="Sua sessão será encerrada no servidor e você precisará entrar novamente."
+      confirmLabel="Sair"
+      cancelLabel="Cancelar"
+      formAction={logoutAction}
     />
   );
 }

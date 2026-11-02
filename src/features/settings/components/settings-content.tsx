@@ -1,5 +1,4 @@
-import { Info, Settings, User } from "lucide-react";
-import { DemoNotice } from "@/components/feedback/demo-notice";
+import { CalendarDays, Info, Settings, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -8,11 +7,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { demoUser } from "@/config/demo";
 import { siteConfig } from "@/config/site";
+import { ProfileForm } from "@/features/settings/components/profile-form";
+import type { CurrentUser } from "@/lib/auth/types";
 
 const preferences = [
   {
@@ -28,17 +26,19 @@ const preferences = [
 const aboutItems = [
   { label: "Aplicação", value: siteConfig.name },
   { label: "Versão", value: "0.1.0" },
-  { label: "Ambiente", value: "Demonstração" },
 ];
 
-export function SettingsContent() {
+export type SettingsContentProps = {
+  user: CurrentUser;
+};
+
+export function SettingsContent({ user }: SettingsContentProps) {
+  const createdAt = new Intl.DateTimeFormat("pt-BR", {
+    dateStyle: "long",
+  }).format(new Date(user.createdAt));
+
   return (
     <div className="space-y-6">
-      <DemoNotice>
-        Esta tela é somente leitura nesta etapa. A edição de perfil e as
-        preferências serão habilitadas com a autenticação.
-      </DemoNotice>
-
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -46,24 +46,18 @@ export function SettingsContent() {
             Perfil
           </CardTitle>
           <CardDescription>
-            Informações básicas da conta de demonstração.
+            Atualize seu nome e e-mail. O identificador da conta não pode ser
+            alterado.
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="settings-name">Nome</Label>
-              <Input id="settings-name" defaultValue={demoUser.name} disabled />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="settings-email">E-mail</Label>
-              <Input
-                id="settings-email"
-                type="email"
-                defaultValue={demoUser.email}
-                disabled
-              />
-            </div>
+        <CardContent className="space-y-5">
+          <ProfileForm user={user} />
+
+          <Separator />
+
+          <div className="flex items-center gap-2 text-body text-neutral-500">
+            <CalendarDays className="h-4 w-4" aria-hidden="true" />
+            <span>Conta criada em {createdAt}</span>
           </div>
         </CardContent>
       </Card>

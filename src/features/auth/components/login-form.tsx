@@ -1,25 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import { DemoNotice } from "@/components/feedback/demo-notice";
-import { useToast } from "@/components/feedback/toast";
+import { useActionState } from "react";
+import { FormAlert } from "@/components/feedback/form-alert";
 import { Button } from "@/components/ui/button";
+import { FieldError } from "@/components/ui/field-error";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { routes } from "@/config/routes";
+import { loginAction } from "@/features/auth/actions";
+import { initialAuthFormState } from "@/features/auth/types";
 
 export function LoginForm() {
-  const { toast } = useToast();
+  const [state, action, pending] = useActionState(
+    loginAction,
+    initialAuthFormState,
+  );
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    toast({
-      variant: "info",
-      title: "Autenticação em breve",
-      description:
-        "Esta é uma demonstração visual. Nenhum dado foi enviado ou validado.",
-    });
-  }
+  const emailError = state.fieldErrors?.email;
+  const passwordError = state.fieldErrors?.password;
 
   return (
     <div className="space-y-6">
@@ -30,12 +29,11 @@ export function LoginForm() {
         </p>
       </div>
 
-      <DemoNotice>
-        Autenticação ainda não implementada. Use esta tela apenas para avaliar o
-        layout.
-      </DemoNotice>
+      {state.status === "error" && state.message && (
+        <FormAlert>{state.message}</FormAlert>
+      )}
 
-      <form className="space-y-5" onSubmit={handleSubmit}>
+      <form action={action} className="space-y-5">
         <div className="space-y-2">
           <Label htmlFor="login-email">E-mail</Label>
           <Input
@@ -44,8 +42,12 @@ export function LoginForm() {
             type="email"
             autoComplete="email"
             placeholder="voce@exemplo.com"
+            defaultValue={state.values?.email}
+            aria-invalid={Boolean(emailError)}
+            aria-describedby={emailError ? "login-email-error" : undefined}
             required
           />
+          <FieldError id="login-email-error" messages={emailError} />
         </div>
 
         <div className="space-y-2">
@@ -56,11 +58,16 @@ export function LoginForm() {
             type="password"
             autoComplete="current-password"
             placeholder="Digite sua senha"
+            aria-invalid={Boolean(passwordError)}
+            aria-describedby={
+              passwordError ? "login-password-error" : undefined
+            }
             required
           />
+          <FieldError id="login-password-error" messages={passwordError} />
         </div>
 
-        <Button type="submit" className="w-full" size="lg">
+        <Button type="submit" className="w-full" size="lg" loading={pending}>
           Entrar
         </Button>
       </form>

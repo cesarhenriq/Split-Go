@@ -6,8 +6,14 @@ import { AppHeader } from "@/components/layout/app-header";
 import { AppSidebar } from "@/components/layout/app-sidebar";
 import { SkipLink } from "@/components/layout/skip-link";
 import { useIsMobile } from "@/hooks/use-mobile";
+import type { CurrentUser } from "@/lib/auth/types";
 
-export function DashboardShell({ children }: { children: React.ReactNode }) {
+export type DashboardShellProps = {
+  user: CurrentUser;
+  children: React.ReactNode;
+};
+
+export function DashboardShell({ user, children }: DashboardShellProps) {
   const pathname = usePathname();
   const isMobile = useIsMobile();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -28,9 +34,13 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-dvh bg-background">
       <SkipLink />
-      <AppSidebar mobileOpen={mobileOpen} onMobileClose={closeMobile} />
+      <AppSidebar
+        user={user}
+        mobileOpen={mobileOpen}
+        onMobileClose={closeMobile}
+      />
       <div className="lg:pl-64">
-        <AppHeader onMenuToggle={() => setMobileOpen(true)} />
+        <AppHeader user={user} onMenuToggle={() => setMobileOpen(true)} />
         <main
           id="conteudo-principal"
           className="min-h-[calc(100dvh-4rem)]"

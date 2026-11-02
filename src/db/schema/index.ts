@@ -3,6 +3,7 @@ export * from "./expenses";
 export * from "./group-invitations";
 export * from "./group-members";
 export * from "./groups";
+export * from "./sessions";
 export * from "./settlements";
 export * from "./users";
 
@@ -11,6 +12,7 @@ import type { expenses } from "./expenses";
 import type { groupInvitations } from "./group-invitations";
 import type { groupMembers } from "./group-members";
 import type { groups } from "./groups";
+import type { sessions } from "./sessions";
 import type { settlements } from "./settlements";
 import type { users } from "./users";
 
@@ -34,3 +36,6 @@ export type NewExpenseSplit = typeof expenseSplits.$inferInsert;
 
 export type Settlement = typeof settlements.$inferSelect;
 export type NewSettlement = typeof settlements.$inferInsert;
+
+export type Session = typeof sessions.$inferSelect;
+export type NewSession = typeof sessions.$inferInsert;

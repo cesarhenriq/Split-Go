@@ -16,11 +16,11 @@ import { useEffect, useRef, useState } from "react";
 import { AppLogo } from "@/components/layout/app-logo";
 import { LogoutDialog } from "@/components/layout/logout-dialog";
 import { Avatar } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { demoUser } from "@/config/demo";
 import { type NavigationIcon, navigation, routes } from "@/config/routes";
+import type { CurrentUser } from "@/lib/auth/types";
+import { getInitials } from "@/lib/user";
 import { cn } from "@/lib/utils";
 
 const iconMap: Record<NavigationIcon, LucideIcon> = {
@@ -32,11 +32,13 @@ const iconMap: Record<NavigationIcon, LucideIcon> = {
 };
 
 export type AppSidebarProps = {
+  user: CurrentUser;
   mobileOpen?: boolean;
   onMobileClose?: () => void;
 };
 
 export function AppSidebar({
+  user,
   mobileOpen = false,
   onMobileClose,
 }: AppSidebarProps) {
@@ -149,17 +151,14 @@ export function AppSidebar({
 
       <div className="space-y-3 p-4">
         <div className="flex items-center gap-3">
-          <Avatar fallback={demoUser.initials} alt={demoUser.name} size="md" />
+          <Avatar fallback={getInitials(user.name)} alt={user.name} size="md" />
           <div className="flex min-w-0 flex-col">
-            <span className="truncate text-sm font-medium">
-              {demoUser.name}
-            </span>
+            <span className="truncate text-sm font-medium">{user.name}</span>
             <span className="truncate text-meta text-neutral-500">
-              {demoUser.email}
+              {user.email}
             </span>
           </div>
         </div>
-        <Badge variant="secondary">Dados de demonstração</Badge>
         <Button
           type="button"
           variant="outline"

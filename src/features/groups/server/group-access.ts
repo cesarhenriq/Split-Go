@@ -1,9 +1,8 @@
 import { and, eq, inArray, isNull } from "drizzle-orm";
-import type { NodePgTransaction } from "drizzle-orm/node-postgres";
-import type { relations } from "@/db/relations";
 import { groupMembers } from "@/db/schema";
+import type { DatabaseTransaction } from "@/db/types";
 
-export type DatabaseTransaction = NodePgTransaction<typeof relations>;
+export type { DatabaseTransaction } from "@/db/types";
 
 export type GroupAccessErrorCode =
   | "EMPTY_PARTICIPANT_LIST"

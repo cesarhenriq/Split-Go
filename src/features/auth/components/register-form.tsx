@@ -1,25 +1,26 @@
 "use client";
 
 import Link from "next/link";
-import { DemoNotice } from "@/components/feedback/demo-notice";
-import { useToast } from "@/components/feedback/toast";
+import { useActionState } from "react";
+import { FormAlert } from "@/components/feedback/form-alert";
 import { Button } from "@/components/ui/button";
+import { FieldError } from "@/components/ui/field-error";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { routes } from "@/config/routes";
+import { registerAction } from "@/features/auth/actions";
+import { initialAuthFormState } from "@/features/auth/types";
 
 export function RegisterForm() {
-  const { toast } = useToast();
+  const [state, action, pending] = useActionState(
+    registerAction,
+    initialAuthFormState,
+  );
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    toast({
-      variant: "info",
-      title: "Cadastro em breve",
-      description:
-        "Esta é uma demonstração visual. Nenhuma conta foi criada e nenhum dado foi enviado.",
-    });
-  }
+  const nameError = state.fieldErrors?.name;
+  const emailError = state.fieldErrors?.email;
+  const passwordError = state.fieldErrors?.password;
+  const confirmPasswordError = state.fieldErrors?.confirmPassword;
 
   return (
     <div className="space-y-6">
@@ -30,12 +31,11 @@ export function RegisterForm() {
         </p>
       </div>
 
-      <DemoNotice>
-        O cadastro será habilitado na etapa de autenticação. Por enquanto, esta
-        tela é apenas uma prévia do layout.
-      </DemoNotice>
+      {state.status === "error" && state.message && (
+        <FormAlert>{state.message}</FormAlert>
+      )}
 
-      <form className="space-y-5" onSubmit={handleSubmit}>
+      <form action={action} className="space-y-5">
         <div className="space-y-2">
           <Label htmlFor="register-name">Nome completo</Label>
           <Input
@@ -44,8 +44,12 @@ export function RegisterForm() {
             type="text"
             autoComplete="name"
             placeholder="Seu nome"
+            defaultValue={state.values?.name}
+            aria-invalid={Boolean(nameError)}
+            aria-describedby={nameError ? "register-name-error" : undefined}
             required
           />
+          <FieldError id="register-name-error" messages={nameError} />
         </div>
 
         <div className="space-y-2">
@@ -56,8 +60,12 @@ export function RegisterForm() {
             type="email"
             autoComplete="email"
             placeholder="voce@exemplo.com"
+            defaultValue={state.values?.email}
+            aria-invalid={Boolean(emailError)}
+            aria-describedby={emailError ? "register-email-error" : undefined}
             required
           />
+          <FieldError id="register-email-error" messages={emailError} />
         </div>
 
         <div className="space-y-2">
@@ -68,15 +76,43 @@ export function RegisterForm() {
             type="password"
             autoComplete="new-password"
             placeholder="Crie uma senha"
-            aria-describedby="register-password-hint"
+            aria-invalid={Boolean(passwordError)}
+            aria-describedby={
+              passwordError
+                ? "register-password-error"
+                : "register-password-hint"
+            }
             required
           />
           <p id="register-password-hint" className="text-meta text-neutral-500">
             Use pelo menos 8 caracteres.
           </p>
+          <FieldError id="register-password-error" messages={passwordError} />
         </div>
 
-        <Button type="submit" className="w-full" size="lg">
+        <div className="space-y-2">
+          <Label htmlFor="register-confirm-password">Confirmar senha</Label>
+          <Input
+            id="register-confirm-password"
+            name="confirmPassword"
+            type="password"
+            autoComplete="new-password"
+            placeholder="Repita a senha"
+            aria-invalid={Boolean(confirmPasswordError)}
+            aria-describedby={
+              confirmPasswordError
+                ? "register-confirm-password-error"
+                : undefined
+            }
+            required
+          />
+          <FieldError
+            id="register-confirm-password-error"
+            messages={confirmPasswordError}
+          />
+        </div>
+
+        <Button type="submit" className="w-full" size="lg" loading={pending}>
           Criar conta
         </Button>
       </form>

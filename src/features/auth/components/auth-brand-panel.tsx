@@ -38,7 +38,7 @@ export function AuthBrandPanel() {
       </div>
 
       <p className="text-meta text-primary-200">
-        Ambiente de demonstração: nenhuma conta real é criada nesta etapa.
+        Acesso protegido por sessão segura e senha criptografada com Argon2id.
       </p>
     </aside>
   );
