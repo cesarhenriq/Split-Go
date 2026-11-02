@@ -1,0 +1,2874 @@
+{
+  "type": "base",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "c6e01fee-0265-4617-8168-90b634320eff",
+  "prevIds": [
+    "00000000-0000-0000-0000-000000000000"
+  ],
+  "footprints": [
+    {
+      "statementType": "create_enum",
+      "statementTarget": [
+        "enum",
+        "public",
+        "expense_split_method"
+      ],
+      "writes": [
+        "s|enum|public.expense_split_method",
+        "n|enum|public.expense_split_method",
+        "e|enum|public.expense_split_method",
+        "n|type|public.expense_split_method"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_enum",
+      "statementTarget": [
+        "enum",
+        "public",
+        "group_invitation_status"
+      ],
+      "writes": [
+        "s|enum|public.group_invitation_status",
+        "n|enum|public.group_invitation_status",
+        "e|enum|public.group_invitation_status",
+        "n|type|public.group_invitation_status"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_enum",
+      "statementTarget": [
+        "enum",
+        "public",
+        "group_member_role"
+      ],
+      "writes": [
+        "s|enum|public.group_member_role",
+        "n|enum|public.group_member_role",
+        "e|enum|public.group_member_role",
+        "n|type|public.group_member_role"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_enum",
+      "statementTarget": [
+        "enum",
+        "public",
+        "group_member_status"
+      ],
+      "writes": [
+        "s|enum|public.group_member_status",
+        "n|enum|public.group_member_status",
+        "e|enum|public.group_member_status",
+        "n|type|public.group_member_status"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_enum",
+      "statementTarget": [
+        "enum",
+        "public",
+        "settlement_status"
+      ],
+      "writes": [
+        "s|enum|public.settlement_status",
+        "n|enum|public.settlement_status",
+        "e|enum|public.settlement_status",
+        "n|type|public.settlement_status"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "expense_splits"
+      ],
+      "writes": [
+        "s|tbl|public.expense_splits",
+        "n|tbl|public.expense_splits",
+        "e|tbl|public.expense_splits",
+        "n|rel|public.expense_splits",
+        "n|type|public.expense_splits",
+        "n|rel|public.expense_splits_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "expenses"
+      ],
+      "writes": [
+        "s|tbl|public.expenses",
+        "n|tbl|public.expenses",
+        "e|tbl|public.expenses",
+        "n|rel|public.expenses",
+        "n|type|public.expenses",
+        "n|rel|public.expenses_pkey"
+      ],
+      "reads": [
+        "n|sch|public",
+        "n|enum|public.expense_split_method"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "group_invitations"
+      ],
+      "writes": [
+        "s|tbl|public.group_invitations",
+        "n|tbl|public.group_invitations",
+        "e|tbl|public.group_invitations",
+        "n|rel|public.group_invitations",
+        "n|type|public.group_invitations",
+        "n|rel|public.group_invitations_pkey"
+      ],
+      "reads": [
+        "n|sch|public",
+        "n|enum|public.group_invitation_status"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "group_members"
+      ],
+      "writes": [
+        "s|tbl|public.group_members",
+        "n|tbl|public.group_members",
+        "e|tbl|public.group_members",
+        "n|rel|public.group_members",
+        "n|type|public.group_members",
+        "n|rel|public.group_members_pkey"
+      ],
+      "reads": [
+        "n|sch|public",
+        "n|enum|public.group_member_role",
+        "n|enum|public.group_member_status"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "groups"
+      ],
+      "writes": [
+        "s|tbl|public.groups",
+        "n|tbl|public.groups",
+        "e|tbl|public.groups",
+        "n|rel|public.groups",
+        "n|type|public.groups",
+        "n|rel|public.groups_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "settlements"
+      ],
+      "writes": [
+        "s|tbl|public.settlements",
+        "n|tbl|public.settlements",
+        "e|tbl|public.settlements",
+        "n|rel|public.settlements",
+        "n|type|public.settlements",
+        "n|rel|public.settlements_pkey"
+      ],
+      "reads": [
+        "n|sch|public",
+        "n|enum|public.settlement_status"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "users"
+      ],
+      "writes": [
+        "s|tbl|public.users",
+        "n|tbl|public.users",
+        "e|tbl|public.users",
+        "n|rel|public.users",
+        "n|type|public.users",
+        "n|rel|public.users_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "expense_splits",
+        "expense_splits_expense_id_user_id_unique"
+      ],
+      "writes": [
+        "s|idx|public.expense_splits_expense_id_user_id_unique",
+        "n|idx|public.expense_splits_expense_id_user_id_unique",
+        "e|idx|public.expense_splits_expense_id_user_id_unique",
+        "n|rel|public.expense_splits_expense_id_user_id_unique"
+      ],
+      "reads": [
+        "n|tbl|public.expense_splits",
+        "n|sch|public",
+        "n|col|public.expense_splits.expense_id",
+        "n|col|public.expense_splits.user_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "expense_splits",
+        "expense_splits_user_id_idx"
+      ],
+      "writes": [
+        "s|idx|public.expense_splits_user_id_idx",
+        "n|idx|public.expense_splits_user_id_idx",
+        "e|idx|public.expense_splits_user_id_idx",
+        "n|rel|public.expense_splits_user_id_idx"
+      ],
+      "reads": [
+        "n|tbl|public.expense_splits",
+        "n|sch|public",
+        "n|col|public.expense_splits.user_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "expenses",
+        "expenses_group_id_expense_date_idx"
+      ],
+      "writes": [
+        "s|idx|public.expenses_group_id_expense_date_idx",
+        "n|idx|public.expenses_group_id_expense_date_idx",
+        "e|idx|public.expenses_group_id_expense_date_idx",
+        "n|rel|public.expenses_group_id_expense_date_idx"
+      ],
+      "reads": [
+        "n|tbl|public.expenses",
+        "n|sch|public",
+        "n|col|public.expenses.group_id",
+        "n|col|public.expenses.expense_date"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "expenses",
+        "expenses_paid_by_idx"
+      ],
+      "writes": [
+        "s|idx|public.expenses_paid_by_idx",
+        "n|idx|public.expenses_paid_by_idx",
+        "e|idx|public.expenses_paid_by_idx",
+        "n|rel|public.expenses_paid_by_idx"
+      ],
+      "reads": [
+        "n|tbl|public.expenses",
+        "n|sch|public",
+        "n|col|public.expenses.paid_by"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "expenses",
+        "expenses_group_id_paid_by_idx"
+      ],
+      "writes": [
+        "s|idx|public.expenses_group_id_paid_by_idx",
+        "n|idx|public.expenses_group_id_paid_by_idx",
+        "e|idx|public.expenses_group_id_paid_by_idx",
+        "n|rel|public.expenses_group_id_paid_by_idx"
+      ],
+      "reads": [
+        "n|tbl|public.expenses",
+        "n|sch|public",
+        "n|col|public.expenses.group_id",
+        "n|col|public.expenses.paid_by"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "group_invitations",
+        "group_invitations_token_hash_unique"
+      ],
+      "writes": [
+        "s|idx|public.group_invitations_token_hash_unique",
+        "n|idx|public.group_invitations_token_hash_unique",
+        "e|idx|public.group_invitations_token_hash_unique",
+        "n|rel|public.group_invitations_token_hash_unique"
+      ],
+      "reads": [
+        "n|tbl|public.group_invitations",
+        "n|sch|public",
+        "n|col|public.group_invitations.token_hash"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "group_invitations",
+        "group_invitations_pending_group_email_unique"
+      ],
+      "writes": [
+        "s|idx|public.group_invitations_pending_group_email_unique",
+        "n|idx|public.group_invitations_pending_group_email_unique",
+        "e|idx|public.group_invitations_pending_group_email_unique",
+        "n|rel|public.group_invitations_pending_group_email_unique"
+      ],
+      "reads": [
+        "n|tbl|public.group_invitations",
+        "n|sch|public",
+        "n|col|public.group_invitations.group_id",
+        "n|col|public.group_invitations.email"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "group_invitations",
+        "group_invitations_group_id_idx"
+      ],
+      "writes": [
+        "s|idx|public.group_invitations_group_id_idx",
+        "n|idx|public.group_invitations_group_id_idx",
+        "e|idx|public.group_invitations_group_id_idx",
+        "n|rel|public.group_invitations_group_id_idx"
+      ],
+      "reads": [
+        "n|tbl|public.group_invitations",
+        "n|sch|public",
+        "n|col|public.group_invitations.group_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "group_invitations",
+        "group_invitations_email_idx"
+      ],
+      "writes": [
+        "s|idx|public.group_invitations_email_idx",
+        "n|idx|public.group_invitations_email_idx",
+        "e|idx|public.group_invitations_email_idx",
+        "n|rel|public.group_invitations_email_idx"
+      ],
+      "reads": [
+        "n|tbl|public.group_invitations",
+        "n|sch|public",
+        "n|col|public.group_invitations.email"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "group_invitations",
+        "group_invitations_invited_by_idx"
+      ],
+      "writes": [
+        "s|idx|public.group_invitations_invited_by_idx",
+        "n|idx|public.group_invitations_invited_by_idx",
+        "e|idx|public.group_invitations_invited_by_idx",
+        "n|rel|public.group_invitations_invited_by_idx"
+      ],
+      "reads": [
+        "n|tbl|public.group_invitations",
+        "n|sch|public",
+        "n|col|public.group_invitations.invited_by"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "group_invitations",
+        "group_invitations_status_expires_at_idx"
+      ],
+      "writes": [
+        "s|idx|public.group_invitations_status_expires_at_idx",
+        "n|idx|public.group_invitations_status_expires_at_idx",
+        "e|idx|public.group_invitations_status_expires_at_idx",
+        "n|rel|public.group_invitations_status_expires_at_idx"
+      ],
+      "reads": [
+        "n|tbl|public.group_invitations",
+        "n|sch|public",
+        "n|col|public.group_invitations.status",
+        "n|col|public.group_invitations.expires_at"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "group_members",
+        "group_members_group_id_user_id_unique"
+      ],
+      "writes": [
+        "s|idx|public.group_members_group_id_user_id_unique",
+        "n|idx|public.group_members_group_id_user_id_unique",
+        "e|idx|public.group_members_group_id_user_id_unique",
+        "n|rel|public.group_members_group_id_user_id_unique"
+      ],
+      "reads": [
+        "n|tbl|public.group_members",
+        "n|sch|public",
+        "n|col|public.group_members.group_id",
+        "n|col|public.group_members.user_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "group_members",
+        "group_members_user_id_idx"
+      ],
+      "writes": [
+        "s|idx|public.group_members_user_id_idx",
+        "n|idx|public.group_members_user_id_idx",
+        "e|idx|public.group_members_user_id_idx",
+        "n|rel|public.group_members_user_id_idx"
+      ],
+      "reads": [
+        "n|tbl|public.group_members",
+        "n|sch|public",
+        "n|col|public.group_members.user_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "group_members",
+        "group_members_group_id_status_idx"
+      ],
+      "writes": [
+        "s|idx|public.group_members_group_id_status_idx",
+        "n|idx|public.group_members_group_id_status_idx",
+        "e|idx|public.group_members_group_id_status_idx",
+        "n|rel|public.group_members_group_id_status_idx"
+      ],
+      "reads": [
+        "n|tbl|public.group_members",
+        "n|sch|public",
+        "n|col|public.group_members.group_id",
+        "n|col|public.group_members.status"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "groups",
+        "groups_created_by_idx"
+      ],
+      "writes": [
+        "s|idx|public.groups_created_by_idx",
+        "n|idx|public.groups_created_by_idx",
+        "e|idx|public.groups_created_by_idx",
+        "n|rel|public.groups_created_by_idx"
+      ],
+      "reads": [
+        "n|tbl|public.groups",
+        "n|sch|public",
+        "n|col|public.groups.created_by"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "settlements",
+        "settlements_group_id_status_idx"
+      ],
+      "writes": [
+        "s|idx|public.settlements_group_id_status_idx",
+        "n|idx|public.settlements_group_id_status_idx",
+        "e|idx|public.settlements_group_id_status_idx",
+        "n|rel|public.settlements_group_id_status_idx"
+      ],
+      "reads": [
+        "n|tbl|public.settlements",
+        "n|sch|public",
+        "n|col|public.settlements.group_id",
+        "n|col|public.settlements.status"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "settlements",
+        "settlements_group_id_created_at_idx"
+      ],
+      "writes": [
+        "s|idx|public.settlements_group_id_created_at_idx",
+        "n|idx|public.settlements_group_id_created_at_idx",
+        "e|idx|public.settlements_group_id_created_at_idx",
+        "n|rel|public.settlements_group_id_created_at_idx"
+      ],
+      "reads": [
+        "n|tbl|public.settlements",
+        "n|sch|public",
+        "n|col|public.settlements.group_id",
+        "n|col|public.settlements.created_at"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "settlements",
+        "settlements_paid_by_idx"
+      ],
+      "writes": [
+        "s|idx|public.settlements_paid_by_idx",
+        "n|idx|public.settlements_paid_by_idx",
+        "e|idx|public.settlements_paid_by_idx",
+        "n|rel|public.settlements_paid_by_idx"
+      ],
+      "reads": [
+        "n|tbl|public.settlements",
+        "n|sch|public",
+        "n|col|public.settlements.paid_by"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "settlements",
+        "settlements_received_by_idx"
+      ],
+      "writes": [
+        "s|idx|public.settlements_received_by_idx",
+        "n|idx|public.settlements_received_by_idx",
+        "e|idx|public.settlements_received_by_idx",
+        "n|rel|public.settlements_received_by_idx"
+      ],
+      "reads": [
+        "n|tbl|public.settlements",
+        "n|sch|public",
+        "n|col|public.settlements.received_by"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "settlements",
+        "settlements_group_id_paid_by_idx"
+      ],
+      "writes": [
+        "s|idx|public.settlements_group_id_paid_by_idx",
+        "n|idx|public.settlements_group_id_paid_by_idx",
+        "e|idx|public.settlements_group_id_paid_by_idx",
+        "n|rel|public.settlements_group_id_paid_by_idx"
+      ],
+      "reads": [
+        "n|tbl|public.settlements",
+        "n|sch|public",
+        "n|col|public.settlements.group_id",
+        "n|col|public.settlements.paid_by"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "settlements",
+        "settlements_group_id_received_by_idx"
+      ],
+      "writes": [
+        "s|idx|public.settlements_group_id_received_by_idx",
+        "n|idx|public.settlements_group_id_received_by_idx",
+        "e|idx|public.settlements_group_id_received_by_idx",
+        "n|rel|public.settlements_group_id_received_by_idx"
+      ],
+      "reads": [
+        "n|tbl|public.settlements",
+        "n|sch|public",
+        "n|col|public.settlements.group_id",
+        "n|col|public.settlements.received_by"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "users",
+        "users_email_unique"
+      ],
+      "writes": [
+        "s|idx|public.users_email_unique",
+        "n|idx|public.users_email_unique",
+        "e|idx|public.users_email_unique",
+        "n|rel|public.users_email_unique"
+      ],
+      "reads": [
+        "n|tbl|public.users",
+        "n|sch|public",
+        "n|col|public.users.email"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "expense_splits"
+      ],
+      "writes": [
+        "s|fk|public.expense_splits.expense_splits_expense_id_expenses_fk",
+        "n|fk|public.expense_splits.expense_splits_expense_id_expenses_fk",
+        "e|fk|public.expense_splits.expense_splits_expense_id_expenses_fk",
+        "n|con|public.expense_splits.expense_splits_expense_id_expenses_fk"
+      ],
+      "reads": [
+        "n|tbl|public.expense_splits",
+        "n|sch|public",
+        "n|tbl|public.expenses",
+        "n|sch|public",
+        "n|col|public.expense_splits.expense_id",
+        "n|col|public.expenses.id",
+        "e|uniqueness|public.expenses.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "expense_splits"
+      ],
+      "writes": [
+        "s|fk|public.expense_splits.expense_splits_user_id_users_fk",
+        "n|fk|public.expense_splits.expense_splits_user_id_users_fk",
+        "e|fk|public.expense_splits.expense_splits_user_id_users_fk",
+        "n|con|public.expense_splits.expense_splits_user_id_users_fk"
+      ],
+      "reads": [
+        "n|tbl|public.expense_splits",
+        "n|sch|public",
+        "n|tbl|public.users",
+        "n|sch|public",
+        "n|col|public.expense_splits.user_id",
+        "n|col|public.users.id",
+        "e|uniqueness|public.users.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "expenses"
+      ],
+      "writes": [
+        "s|fk|public.expenses.expenses_group_id_groups_fk",
+        "n|fk|public.expenses.expenses_group_id_groups_fk",
+        "e|fk|public.expenses.expenses_group_id_groups_fk",
+        "n|con|public.expenses.expenses_group_id_groups_fk"
+      ],
+      "reads": [
+        "n|tbl|public.expenses",
+        "n|sch|public",
+        "n|tbl|public.groups",
+        "n|sch|public",
+        "n|col|public.expenses.group_id",
+        "n|col|public.groups.id",
+        "e|uniqueness|public.groups.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "expenses"
+      ],
+      "writes": [
+        "s|fk|public.expenses.expenses_paid_by_users_fk",
+        "n|fk|public.expenses.expenses_paid_by_users_fk",
+        "e|fk|public.expenses.expenses_paid_by_users_fk",
+        "n|con|public.expenses.expenses_paid_by_users_fk"
+      ],
+      "reads": [
+        "n|tbl|public.expenses",
+        "n|sch|public",
+        "n|tbl|public.users",
+        "n|sch|public",
+        "n|col|public.expenses.paid_by",
+        "n|col|public.users.id",
+        "e|uniqueness|public.users.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "expenses"
+      ],
+      "writes": [
+        "s|fk|public.expenses.expenses_group_id_paid_by_group_members_fk",
+        "n|fk|public.expenses.expenses_group_id_paid_by_group_members_fk",
+        "e|fk|public.expenses.expenses_group_id_paid_by_group_members_fk",
+        "n|con|public.expenses.expenses_group_id_paid_by_group_members_fk"
+      ],
+      "reads": [
+        "n|tbl|public.expenses",
+        "n|sch|public",
+        "n|tbl|public.group_members",
+        "n|sch|public",
+        "n|col|public.expenses.group_id",
+        "n|col|public.expenses.paid_by",
+        "n|col|public.group_members.group_id",
+        "n|col|public.group_members.user_id",
+        "e|uniqueness|public.group_members.group_id.user_id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "group_invitations"
+      ],
+      "writes": [
+        "s|fk|public.group_invitations.group_invitations_group_id_groups_fk",
+        "n|fk|public.group_invitations.group_invitations_group_id_groups_fk",
+        "e|fk|public.group_invitations.group_invitations_group_id_groups_fk",
+        "n|con|public.group_invitations.group_invitations_group_id_groups_fk"
+      ],
+      "reads": [
+        "n|tbl|public.group_invitations",
+        "n|sch|public",
+        "n|tbl|public.groups",
+        "n|sch|public",
+        "n|col|public.group_invitations.group_id",
+        "n|col|public.groups.id",
+        "e|uniqueness|public.groups.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "group_invitations"
+      ],
+      "writes": [
+        "s|fk|public.group_invitations.group_invitations_invited_by_users_fk",
+        "n|fk|public.group_invitations.group_invitations_invited_by_users_fk",
+        "e|fk|public.group_invitations.group_invitations_invited_by_users_fk",
+        "n|con|public.group_invitations.group_invitations_invited_by_users_fk"
+      ],
+      "reads": [
+        "n|tbl|public.group_invitations",
+        "n|sch|public",
+        "n|tbl|public.users",
+        "n|sch|public",
+        "n|col|public.group_invitations.invited_by",
+        "n|col|public.users.id",
+        "e|uniqueness|public.users.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "group_members"
+      ],
+      "writes": [
+        "s|fk|public.group_members.group_members_group_id_groups_fk",
+        "n|fk|public.group_members.group_members_group_id_groups_fk",
+        "e|fk|public.group_members.group_members_group_id_groups_fk",
+        "n|con|public.group_members.group_members_group_id_groups_fk"
+      ],
+      "reads": [
+        "n|tbl|public.group_members",
+        "n|sch|public",
+        "n|tbl|public.groups",
+        "n|sch|public",
+        "n|col|public.group_members.group_id",
+        "n|col|public.groups.id",
+        "e|uniqueness|public.groups.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "group_members"
+      ],
+      "writes": [
+        "s|fk|public.group_members.group_members_user_id_users_fk",
+        "n|fk|public.group_members.group_members_user_id_users_fk",
+        "e|fk|public.group_members.group_members_user_id_users_fk",
+        "n|con|public.group_members.group_members_user_id_users_fk"
+      ],
+      "reads": [
+        "n|tbl|public.group_members",
+        "n|sch|public",
+        "n|tbl|public.users",
+        "n|sch|public",
+        "n|col|public.group_members.user_id",
+        "n|col|public.users.id",
+        "e|uniqueness|public.users.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "groups"
+      ],
+      "writes": [
+        "s|fk|public.groups.groups_created_by_users_fk",
+        "n|fk|public.groups.groups_created_by_users_fk",
+        "e|fk|public.groups.groups_created_by_users_fk",
+        "n|con|public.groups.groups_created_by_users_fk"
+      ],
+      "reads": [
+        "n|tbl|public.groups",
+        "n|sch|public",
+        "n|tbl|public.users",
+        "n|sch|public",
+        "n|col|public.groups.created_by",
+        "n|col|public.users.id",
+        "e|uniqueness|public.users.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "settlements"
+      ],
+      "writes": [
+        "s|fk|public.settlements.settlements_group_id_groups_fk",
+        "n|fk|public.settlements.settlements_group_id_groups_fk",
+        "e|fk|public.settlements.settlements_group_id_groups_fk",
+        "n|con|public.settlements.settlements_group_id_groups_fk"
+      ],
+      "reads": [
+        "n|tbl|public.settlements",
+        "n|sch|public",
+        "n|tbl|public.groups",
+        "n|sch|public",
+        "n|col|public.settlements.group_id",
+        "n|col|public.groups.id",
+        "e|uniqueness|public.groups.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "settlements"
+      ],
+      "writes": [
+        "s|fk|public.settlements.settlements_paid_by_users_fk",
+        "n|fk|public.settlements.settlements_paid_by_users_fk",
+        "e|fk|public.settlements.settlements_paid_by_users_fk",
+        "n|con|public.settlements.settlements_paid_by_users_fk"
+      ],
+      "reads": [
+        "n|tbl|public.settlements",
+        "n|sch|public",
+        "n|tbl|public.users",
+        "n|sch|public",
+        "n|col|public.settlements.paid_by",
+        "n|col|public.users.id",
+        "e|uniqueness|public.users.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "settlements"
+      ],
+      "writes": [
+        "s|fk|public.settlements.settlements_received_by_users_fk",
+        "n|fk|public.settlements.settlements_received_by_users_fk",
+        "e|fk|public.settlements.settlements_received_by_users_fk",
+        "n|con|public.settlements.settlements_received_by_users_fk"
+      ],
+      "reads": [
+        "n|tbl|public.settlements",
+        "n|sch|public",
+        "n|tbl|public.users",
+        "n|sch|public",
+        "n|col|public.settlements.received_by",
+        "n|col|public.users.id",
+        "e|uniqueness|public.users.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "settlements"
+      ],
+      "writes": [
+        "s|fk|public.settlements.settlements_group_id_paid_by_group_members_fk",
+        "n|fk|public.settlements.settlements_group_id_paid_by_group_members_fk",
+        "e|fk|public.settlements.settlements_group_id_paid_by_group_members_fk",
+        "n|con|public.settlements.settlements_group_id_paid_by_group_members_fk"
+      ],
+      "reads": [
+        "n|tbl|public.settlements",
+        "n|sch|public",
+        "n|tbl|public.group_members",
+        "n|sch|public",
+        "n|col|public.settlements.group_id",
+        "n|col|public.settlements.paid_by",
+        "n|col|public.group_members.group_id",
+        "n|col|public.group_members.user_id",
+        "e|uniqueness|public.group_members.group_id.user_id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "settlements"
+      ],
+      "writes": [
+        "s|fk|public.settlements.settlements_group_id_received_by_group_members_fk",
+        "n|fk|public.settlements.settlements_group_id_received_by_group_members_fk",
+        "e|fk|public.settlements.settlements_group_id_received_by_group_members_fk",
+        "n|con|public.settlements.settlements_group_id_received_by_group_members_fk"
+      ],
+      "reads": [
+        "n|tbl|public.settlements",
+        "n|sch|public",
+        "n|tbl|public.group_members",
+        "n|sch|public",
+        "n|col|public.settlements.group_id",
+        "n|col|public.settlements.received_by",
+        "n|col|public.group_members.group_id",
+        "n|col|public.group_members.user_id",
+        "e|uniqueness|public.group_members.group_id.user_id"
+      ]
+    }
+  ],
+  "ddl": [
+    {
+      "schema": "public",
+      "name": "expense_splits",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "expenses",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "group_invitations",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "group_members",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "groups",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "settlements",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "users",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "expense_split_method",
+      "values": [
+        "EQUAL",
+        "PERCENTAGE",
+        "FIXED"
+      ],
+      "entityType": "enums"
+    },
+    {
+      "schema": "public",
+      "name": "group_invitation_status",
+      "values": [
+        "PENDING",
+        "ACCEPTED",
+        "DECLINED",
+        "EXPIRED"
+      ],
+      "entityType": "enums"
+    },
+    {
+      "schema": "public",
+      "name": "group_member_role",
+      "values": [
+        "ADMIN",
+        "MEMBER"
+      ],
+      "entityType": "enums"
+    },
+    {
+      "schema": "public",
+      "name": "group_member_status",
+      "values": [
+        "PENDING",
+        "ACCEPTED",
+        "DECLINED"
+      ],
+      "entityType": "enums"
+    },
+    {
+      "schema": "public",
+      "name": "settlement_status",
+      "values": [
+        "PENDING",
+        "CONFIRMED",
+        "CANCELLED"
+      ],
+      "entityType": "enums"
+    },
+    {
+      "schema": "public",
+      "table": "expense_splits",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "expense_splits",
+      "name": "expense_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "expense_splits",
+      "name": "user_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "expense_splits",
+      "name": "share_amount",
+      "type": "bigint",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "expense_splits",
+      "name": "percentage",
+      "type": "numeric(5,2)",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "expense_splits",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "expense_splits",
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "expenses",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "expenses",
+      "name": "group_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "expenses",
+      "name": "paid_by",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "expenses",
+      "name": "description",
+      "type": "varchar(255)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "expenses",
+      "name": "total_amount",
+      "type": "bigint",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "expenses",
+      "name": "split_method",
+      "type": "expense_split_method",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 0,
+      "default": "'EQUAL'",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "expenses",
+      "name": "expense_date",
+      "type": "date",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "expenses",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "expenses",
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group_invitations",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group_invitations",
+      "name": "group_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group_invitations",
+      "name": "email",
+      "type": "varchar(320)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group_invitations",
+      "name": "invited_by",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group_invitations",
+      "name": "token_hash",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group_invitations",
+      "name": "status",
+      "type": "group_invitation_status",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 0,
+      "default": "'PENDING'",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group_invitations",
+      "name": "expires_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group_invitations",
+      "name": "responded_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group_invitations",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group_invitations",
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group_members",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group_members",
+      "name": "group_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group_members",
+      "name": "user_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group_members",
+      "name": "role",
+      "type": "group_member_role",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 0,
+      "default": "'MEMBER'",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group_members",
+      "name": "status",
+      "type": "group_member_status",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 0,
+      "default": "'PENDING'",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group_members",
+      "name": "joined_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group_members",
+      "name": "left_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group_members",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "group_members",
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "groups",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "groups",
+      "name": "name",
+      "type": "varchar(120)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "groups",
+      "name": "description",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "groups",
+      "name": "created_by",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "groups",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "groups",
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "settlements",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "settlements",
+      "name": "group_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "settlements",
+      "name": "paid_by",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "settlements",
+      "name": "received_by",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "settlements",
+      "name": "amount",
+      "type": "bigint",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "settlements",
+      "name": "status",
+      "type": "settlement_status",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 0,
+      "default": "'PENDING'",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "settlements",
+      "name": "paid_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "settlements",
+      "name": "confirmed_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "settlements",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "settlements",
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "users",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "users",
+      "name": "name",
+      "type": "varchar(255)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "users",
+      "name": "email",
+      "type": "varchar(320)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "users",
+      "name": "password_hash",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "users",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "users",
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "expense_splits",
+      "name": "expense_splits_expense_id_user_id_unique",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "expense_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "user_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "expense_splits",
+      "name": "expense_splits_user_id_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "user_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "expenses",
+      "name": "expenses_group_id_expense_date_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "group_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "expense_date",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "expenses",
+      "name": "expenses_paid_by_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "paid_by",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "expenses",
+      "name": "expenses_group_id_paid_by_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "group_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "paid_by",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "group_invitations",
+      "name": "group_invitations_token_hash_unique",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "token_hash",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "group_invitations",
+      "name": "group_invitations_pending_group_email_unique",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "group_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "email",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": true,
+      "where": "\"status\" = 'PENDING'",
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "group_invitations",
+      "name": "group_invitations_group_id_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "group_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "group_invitations",
+      "name": "group_invitations_email_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "email",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "group_invitations",
+      "name": "group_invitations_invited_by_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "invited_by",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "group_invitations",
+      "name": "group_invitations_status_expires_at_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "status",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "expires_at",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "group_members",
+      "name": "group_members_group_id_user_id_unique",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "group_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "user_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "group_members",
+      "name": "group_members_user_id_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "user_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "group_members",
+      "name": "group_members_group_id_status_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "group_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "status",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "groups",
+      "name": "groups_created_by_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "created_by",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "settlements",
+      "name": "settlements_group_id_status_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "group_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "status",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "settlements",
+      "name": "settlements_group_id_created_at_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "group_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "created_at",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "settlements",
+      "name": "settlements_paid_by_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "paid_by",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "settlements",
+      "name": "settlements_received_by_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "received_by",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "settlements",
+      "name": "settlements_group_id_paid_by_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "group_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "paid_by",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "settlements",
+      "name": "settlements_group_id_received_by_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "group_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "received_by",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "users",
+      "name": "users_email_unique",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "email",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "expense_splits",
+      "name": "expense_splits_expense_id_expenses_fk",
+      "nameExplicit": true,
+      "columns": [
+        "expense_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "expenses",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "expense_splits",
+      "name": "expense_splits_user_id_users_fk",
+      "nameExplicit": true,
+      "columns": [
+        "user_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "users",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "expenses",
+      "name": "expenses_group_id_groups_fk",
+      "nameExplicit": true,
+      "columns": [
+        "group_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "groups",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "expenses",
+      "name": "expenses_paid_by_users_fk",
+      "nameExplicit": true,
+      "columns": [
+        "paid_by"
+      ],
+      "schemaTo": "public",
+      "tableTo": "users",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "expenses",
+      "name": "expenses_group_id_paid_by_group_members_fk",
+      "nameExplicit": true,
+      "columns": [
+        "group_id",
+        "paid_by"
+      ],
+      "schemaTo": "public",
+      "tableTo": "group_members",
+      "columnsTo": [
+        "group_id",
+        "user_id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "group_invitations",
+      "name": "group_invitations_group_id_groups_fk",
+      "nameExplicit": true,
+      "columns": [
+        "group_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "groups",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "group_invitations",
+      "name": "group_invitations_invited_by_users_fk",
+      "nameExplicit": true,
+      "columns": [
+        "invited_by"
+      ],
+      "schemaTo": "public",
+      "tableTo": "users",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "group_members",
+      "name": "group_members_group_id_groups_fk",
+      "nameExplicit": true,
+      "columns": [
+        "group_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "groups",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "group_members",
+      "name": "group_members_user_id_users_fk",
+      "nameExplicit": true,
+      "columns": [
+        "user_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "users",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "groups",
+      "name": "groups_created_by_users_fk",
+      "nameExplicit": true,
+      "columns": [
+        "created_by"
+      ],
+      "schemaTo": "public",
+      "tableTo": "users",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "settlements",
+      "name": "settlements_group_id_groups_fk",
+      "nameExplicit": true,
+      "columns": [
+        "group_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "groups",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "settlements",
+      "name": "settlements_paid_by_users_fk",
+      "nameExplicit": true,
+      "columns": [
+        "paid_by"
+      ],
+      "schemaTo": "public",
+      "tableTo": "users",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "settlements",
+      "name": "settlements_received_by_users_fk",
+      "nameExplicit": true,
+      "columns": [
+        "received_by"
+      ],
+      "schemaTo": "public",
+      "tableTo": "users",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "settlements",
+      "name": "settlements_group_id_paid_by_group_members_fk",
+      "nameExplicit": true,
+      "columns": [
+        "group_id",
+        "paid_by"
+      ],
+      "schemaTo": "public",
+      "tableTo": "group_members",
+      "columnsTo": [
+        "group_id",
+        "user_id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "settlements",
+      "name": "settlements_group_id_received_by_group_members_fk",
+      "nameExplicit": true,
+      "columns": [
+        "group_id",
+        "received_by"
+      ],
+      "schemaTo": "public",
+      "tableTo": "group_members",
+      "columnsTo": [
+        "group_id",
+        "user_id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "expense_splits",
+      "name": "expense_splits_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "expenses",
+      "name": "expenses_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "group_invitations",
+      "name": "group_invitations_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "group_members",
+      "name": "group_members_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "groups",
+      "name": "groups_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "settlements",
+      "name": "settlements_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "users",
+      "name": "users_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "expense_splits",
+      "name": "expense_splits_share_amount_positive_check",
+      "value": "\"share_amount\" > 0",
+      "entityType": "checks"
+    },
+    {
+      "schema": "public",
+      "table": "expense_splits",
+      "name": "expense_splits_percentage_range_check",
+      "value": "\"percentage\" IS NULL OR (\"percentage\" >= 0 AND \"percentage\" <= 100)",
+      "entityType": "checks"
+    },
+    {
+      "schema": "public",
+      "table": "expenses",
+      "name": "expenses_total_amount_positive_check",
+      "value": "\"total_amount\" > 0",
+      "entityType": "checks"
+    },
+    {
+      "schema": "public",
+      "table": "expenses",
+      "name": "expenses_description_not_blank_check",
+      "value": "char_length(btrim(\"description\")) > 0",
+      "entityType": "checks"
+    },
+    {
+      "schema": "public",
+      "table": "group_invitations",
+      "name": "group_invitations_email_lowercase_check",
+      "value": "\"email\" = lower(\"email\")",
+      "entityType": "checks"
+    },
+    {
+      "schema": "public",
+      "table": "group_invitations",
+      "name": "group_invitations_token_hash_not_blank_check",
+      "value": "char_length(\"token_hash\") > 0",
+      "entityType": "checks"
+    },
+    {
+      "schema": "public",
+      "table": "group_invitations",
+      "name": "group_invitations_expires_after_created_check",
+      "value": "\"expires_at\" > \"created_at\"",
+      "entityType": "checks"
+    },
+    {
+      "schema": "public",
+      "table": "group_invitations",
+      "name": "group_invitations_response_consistency_check",
+      "value": "(\"status\" IN ('ACCEPTED', 'DECLINED') AND \"responded_at\" IS NOT NULL) OR (\"status\" IN ('PENDING', 'EXPIRED') AND \"responded_at\" IS NULL)",
+      "entityType": "checks"
+    },
+    {
+      "schema": "public",
+      "table": "group_invitations",
+      "name": "group_invitations_responded_after_created_check",
+      "value": "\"responded_at\" IS NULL OR \"responded_at\" >= \"created_at\"",
+      "entityType": "checks"
+    },
+    {
+      "schema": "public",
+      "table": "group_members",
+      "name": "group_members_joined_at_consistency_check",
+      "value": "(\"status\" = 'ACCEPTED' AND \"joined_at\" IS NOT NULL) OR (\"status\" <> 'ACCEPTED' AND \"joined_at\" IS NULL)",
+      "entityType": "checks"
+    },
+    {
+      "schema": "public",
+      "table": "group_members",
+      "name": "group_members_left_at_consistency_check",
+      "value": "\"left_at\" IS NULL OR (\"status\" = 'ACCEPTED' AND \"joined_at\" IS NOT NULL AND \"left_at\" >= \"joined_at\")",
+      "entityType": "checks"
+    },
+    {
+      "schema": "public",
+      "table": "groups",
+      "name": "groups_name_not_blank_check",
+      "value": "char_length(btrim(\"name\")) > 0",
+      "entityType": "checks"
+    },
+    {
+      "schema": "public",
+      "table": "settlements",
+      "name": "settlements_amount_positive_check",
+      "value": "\"amount\" > 0",
+      "entityType": "checks"
+    },
+    {
+      "schema": "public",
+      "table": "settlements",
+      "name": "settlements_distinct_users_check",
+      "value": "\"paid_by\" <> \"received_by\"",
+      "entityType": "checks"
+    },
+    {
+      "schema": "public",
+      "table": "settlements",
+      "name": "settlements_confirmation_consistency_check",
+      "value": "(\"status\" = 'CONFIRMED' AND \"confirmed_at\" IS NOT NULL) OR (\"status\" <> 'CONFIRMED' AND \"confirmed_at\" IS NULL)",
+      "entityType": "checks"
+    },
+    {
+      "schema": "public",
+      "table": "settlements",
+      "name": "settlements_confirmed_after_paid_check",
+      "value": "\"confirmed_at\" IS NULL OR \"confirmed_at\" >= \"paid_at\"",
+      "entityType": "checks"
+    },
+    {
+      "schema": "public",
+      "table": "users",
+      "name": "users_email_lowercase_check",
+      "value": "\"email\" = lower(\"email\")",
+      "entityType": "checks"
+    },
+    {
+      "schema": "public",
+      "table": "users",
+      "name": "users_name_not_blank_check",
+      "value": "char_length(btrim(\"name\")) > 0",
+      "entityType": "checks"
+    },
+    {
+      "schema": "public",
+      "table": "users",
+      "name": "users_password_hash_not_blank_check",
+      "value": "char_length(\"password_hash\") > 0",
+      "entityType": "checks"
+    }
+  ]
+}
