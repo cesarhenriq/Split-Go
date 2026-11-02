@@ -34,6 +34,14 @@ export const navigation = [
 
 export type NavigationIcon = (typeof navigation)[number]["icon"];
 
+export const protectedRoutes = [
+  routes.dashboard.home,
+  routes.dashboard.groups,
+  routes.dashboard.expenses,
+  routes.dashboard.settlements,
+  routes.dashboard.settings,
+] as const;
+
 export const routeTitles: Record<string, string> = {
   [routes.dashboard.home]: "Dashboard",
   [routes.dashboard.groups]: "Meus grupos",
