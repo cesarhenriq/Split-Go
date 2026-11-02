@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { formatCurrency } from "@/lib/format";
+import { formatCents } from "@/lib/money";
 import { cn } from "@/lib/utils";
 
 type SummaryTone = "success" | "danger" | "primary" | "neutral";
@@ -23,21 +23,21 @@ type SummaryItem = {
 const items: SummaryItem[] = [
   {
     label: "A receber",
-    value: formatCurrency(1240),
+    value: formatCents(124_000n),
     hint: "Saldo positivo ilustrativo",
     icon: ArrowUpRight,
     tone: "success",
   },
   {
     label: "A pagar",
-    value: formatCurrency(-485.5),
+    value: formatCents(-48_550n),
     hint: "Saldo devedor ilustrativo",
     icon: ArrowDownRight,
     tone: "danger",
   },
   {
     label: "Saldo geral",
-    value: formatCurrency(754.5),
+    value: formatCents(75_450n),
     hint: "Diferença entre créditos e débitos",
     icon: Scale,
     tone: "primary",
