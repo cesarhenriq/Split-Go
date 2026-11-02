@@ -64,6 +64,8 @@ export async function registerAction(
       };
     }
 
+    console.error("registerAction failed", error);
+
     return {
       status: "error",
       message: "Não foi possível criar sua conta. Tente novamente.",
@@ -96,7 +98,19 @@ export async function loginAction(
     };
   }
 
-  const user = await authenticateUser(parsed.data.email, parsed.data.password);
+  let user: Awaited<ReturnType<typeof authenticateUser>>;
+
+  try {
+    user = await authenticateUser(parsed.data.email, parsed.data.password);
+  } catch (error) {
+    console.error("loginAction authentication failed", error);
+
+    return {
+      status: "error",
+      message: "Não foi possível entrar agora. Tente novamente.",
+      values,
+    };
+  }
 
   if (!user) {
     return {
@@ -106,9 +120,18 @@ export async function loginAction(
     };
   }
 
-  const session = await createSessionForUser(user.id);
+  try {
+    const session = await createSessionForUser(user.id);
+    await setSessionCookie(session.token, session.expiresAt);
+  } catch (error) {
+    console.error("loginAction session creation failed", error);
 
-  await setSessionCookie(session.token, session.expiresAt);
+    return {
+      status: "error",
+      message: "Não foi possível entrar agora. Tente novamente.",
+      values,
+    };
+  }
 
   redirect("/dashboard");
 }

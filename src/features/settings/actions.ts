@@ -48,6 +48,8 @@ export async function updateProfileAction(
       };
     }
 
+    console.error("updateProfileAction failed", error);
+
     return {
       status: "error",
       message: "Não foi possível atualizar seu perfil. Tente novamente.",
