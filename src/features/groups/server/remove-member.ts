@@ -1,4 +1,4 @@
-import { and, eq, isNull } from "drizzle-orm";
+import { and, eq, isNull, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { groupMembers } from "@/db/schema";
 import type { Database } from "@/db/types";
@@ -54,7 +54,7 @@ export async function removeGroupMember(
 
     await tx
       .update(groupMembers)
-      .set({ leftAt: new Date() })
+      .set({ leftAt: sql`now()` })
       .where(
         and(
           eq(groupMembers.groupId, groupId),

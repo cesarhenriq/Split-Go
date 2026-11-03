@@ -1,3 +1,4 @@
+import { sql } from "drizzle-orm";
 import { db } from "@/db";
 import { groupMembers, groups } from "@/db/schema";
 import type { Database } from "@/db/types";
@@ -27,7 +28,7 @@ export async function createGroup(
       userId,
       role: "ADMIN",
       status: "ACCEPTED",
-      joinedAt: new Date(),
+      joinedAt: sql`now()`,
     });
 
     return { id: group.id };
