@@ -3,6 +3,7 @@ import {
   Crown,
   Mail,
   Receipt,
+  Scale,
   ShieldCheck,
   Users,
 } from "lucide-react";
@@ -39,6 +40,10 @@ export function GroupDetailContent({ group }: { group: GroupDetail }) {
         }
         action={
           <div className="flex flex-wrap items-start justify-end gap-2">
+            <ButtonLink href={`/groups/${group.id}/balances`} variant="outline">
+              <Scale className="h-4 w-4" aria-hidden="true" />
+              Saldos
+            </ButtonLink>
             <ButtonLink href={`/groups/${group.id}/expenses`} variant="outline">
               <Receipt className="h-4 w-4" aria-hidden="true" />
               Despesas

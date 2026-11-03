@@ -1,4 +1,4 @@
-import { Plus, Receipt } from "lucide-react";
+import { Plus, Receipt, Scale } from "lucide-react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -102,6 +102,14 @@ async function GroupExpensesLoader({
           <div className="flex flex-wrap justify-end gap-2">
             <ButtonLink href={`/groups/${groupId}`} variant="outline" size="sm">
               Voltar ao grupo
+            </ButtonLink>
+            <ButtonLink
+              href={`/groups/${groupId}/balances`}
+              variant="outline"
+              size="sm"
+            >
+              <Scale className="h-4 w-4" aria-hidden="true" />
+              Saldos
             </ButtonLink>
             <ButtonLink href={`/groups/${groupId}/expenses/new`} size="sm">
               <Plus className="h-4 w-4" aria-hidden="true" />

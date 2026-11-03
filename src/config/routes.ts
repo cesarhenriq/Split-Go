@@ -92,6 +92,10 @@ function getDynamicRouteTitle(pathname: string) {
     return "Despesas";
   }
 
+  if (/\/groups\/[^/]+\/balances$/.test(pathname)) {
+    return "Saldos";
+  }
+
   return null;
 }
 
@@ -125,6 +129,10 @@ function getBreadcrumbLabel(href: string, segment: string) {
 
   if (/\/groups\/[^/]+\/expenses\/[^/]+$/.test(href)) {
     return "Detalhes da despesa";
+  }
+
+  if (/\/groups\/[^/]+\/balances$/.test(href)) {
+    return "Saldos";
   }
 
   return humanizeSegment(segment);
