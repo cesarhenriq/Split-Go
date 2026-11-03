@@ -8,6 +8,10 @@ export type PercentageParticipant = SplitParticipant & {
   percentage: number;
 };
 
+export type PercentageBasisPointsParticipant = SplitParticipant & {
+  basisPoints: number;
+};
+
 export type FixedParticipant = SplitParticipant & {
   amount: bigint;
 };
@@ -22,13 +26,11 @@ export type SplitCalculationErrorCode =
   | "INVALID_TOTAL"
   | "NO_PARTICIPANTS"
   | "DUPLICATE_PARTICIPANT"
-  | "TOTAL_TOO_SMALL"
   | "INVALID_PERCENTAGE"
   | "PERCENTAGE_PRECISION"
   | "PERCENTAGE_TOTAL"
   | "INVALID_FIXED_AMOUNT"
-  | "FIXED_AMOUNT_TOTAL"
-  | "ZERO_SHARE";
+  | "FIXED_AMOUNT_TOTAL";
 
 export class SplitCalculationError extends Error {
   readonly code: SplitCalculationErrorCode;
@@ -107,13 +109,6 @@ export function calculateEqualSplit(
   const baseShare = totalAmount / participantCount;
   const remainder = totalAmount % participantCount;
 
-  if (baseShare === 0n) {
-    throw new SplitCalculationError(
-      "TOTAL_TOO_SMALL",
-      "O valor total é insuficiente para dividir entre os participantes.",
-    );
-  }
-
   return sorted.map((participant, index) => ({
     userId: participant.userId,
     shareAmount: baseShare + (BigInt(index) < remainder ? 1n : 0n),
@@ -121,40 +116,27 @@ export function calculateEqualSplit(
   }));
 }
 
-export function calculatePercentageSplit(
+export function calculatePercentageSplitFromBasisPoints(
   totalAmount: bigint,
-  participants: PercentageParticipant[],
+  participants: PercentageBasisPointsParticipant[],
 ): CalculatedShare[] {
   assertValidTotal(totalAmount);
   const sorted = sortParticipants(participants);
-  const basisPoints = sorted.map((participant) => {
-    const value = participant.percentage;
 
-    if (!Number.isFinite(value) || value <= 0 || value > 100) {
+  for (const participant of sorted) {
+    if (
+      !Number.isInteger(participant.basisPoints) ||
+      participant.basisPoints <= 0 ||
+      participant.basisPoints > 10_000
+    ) {
       throw new SplitCalculationError(
         "INVALID_PERCENTAGE",
         "Cada percentual deve ser maior que zero e menor ou igual a 100.",
       );
     }
+  }
 
-    const points = value * 100;
-    const rounded = Math.round(points);
-
-    if (Math.abs(points - rounded) > 1e-9) {
-      throw new SplitCalculationError(
-        "PERCENTAGE_PRECISION",
-        "Os percentuais devem ter no máximo duas casas decimais.",
-      );
-    }
-
-    return {
-      userId: participant.userId,
-      percentage: value,
-      basisPoints: rounded,
-    };
-  });
-
-  const totalBasisPoints = basisPoints.reduce(
+  const totalBasisPoints = sorted.reduce(
     (total, participant) => total + participant.basisPoints,
     0,
   );
@@ -166,7 +148,7 @@ export function calculatePercentageSplit(
     );
   }
 
-  const calculated = basisPoints.map((participant) => {
+  const calculated = sorted.map((participant) => {
     const raw = totalAmount * BigInt(participant.basisPoints);
 
     return {
@@ -198,20 +180,46 @@ export function calculatePercentageSplit(
     residual -= 1n;
   }
 
-  if (calculated.some((participant) => participant.shareAmount <= 0n)) {
-    throw new SplitCalculationError(
-      "ZERO_SHARE",
-      "O valor total é insuficiente para gerar parcelas positivas.",
-    );
-  }
-
   return calculated
     .map((participant) => ({
       userId: participant.userId,
       shareAmount: participant.shareAmount,
-      percentage: participant.percentage,
+      percentage: participant.basisPoints / 100,
     }))
     .sort((a, b) => a.userId.localeCompare(b.userId));
+}
+
+export function calculatePercentageSplit(
+  totalAmount: bigint,
+  participants: PercentageParticipant[],
+): CalculatedShare[] {
+  const basisPoints = participants.map((participant) => {
+    const value = participant.percentage;
+
+    if (!Number.isFinite(value) || value <= 0 || value > 100) {
+      throw new SplitCalculationError(
+        "INVALID_PERCENTAGE",
+        "Cada percentual deve ser maior que zero e menor ou igual a 100.",
+      );
+    }
+
+    const points = value * 100;
+    const rounded = Math.round(points);
+
+    if (Math.abs(points - rounded) > 1e-9) {
+      throw new SplitCalculationError(
+        "PERCENTAGE_PRECISION",
+        "Os percentuais devem ter no máximo duas casas decimais.",
+      );
+    }
+
+    return {
+      userId: participant.userId,
+      basisPoints: rounded,
+    };
+  });
+
+  return calculatePercentageSplitFromBasisPoints(totalAmount, basisPoints);
 }
 
 export function calculateFixedSplit(

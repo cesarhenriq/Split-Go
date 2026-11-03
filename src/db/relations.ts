@@ -39,6 +39,14 @@ export const relations = defineRelations(
         from: r.users.id,
         to: r.expenses.paidBy,
       }),
+      expensesCreated: r.many.expenses({
+        from: r.users.id,
+        to: r.expenses.createdBy,
+      }),
+      expensesCancelled: r.many.expenses({
+        from: r.users.id,
+        to: r.expenses.cancelledBy,
+      }),
       expenseSplits: r.many.expenseSplits({
         from: r.users.id,
         to: r.expenseSplits.userId,
@@ -105,6 +113,14 @@ export const relations = defineRelations(
       }),
       payer: r.one.users({
         from: r.expenses.paidBy,
+        to: r.users.id,
+      }),
+      creator: r.one.users({
+        from: r.expenses.createdBy,
+        to: r.users.id,
+      }),
+      canceller: r.one.users({
+        from: r.expenses.cancelledBy,
         to: r.users.id,
       }),
       splits: r.many.expenseSplits({

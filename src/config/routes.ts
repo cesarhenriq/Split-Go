@@ -75,13 +75,59 @@ function humanizeSegment(segment: string) {
     .join(" ");
 }
 
+function getDynamicRouteTitle(pathname: string) {
+  if (/\/groups\/[^/]+\/expenses\/new$/.test(pathname)) {
+    return "Nova despesa";
+  }
+
+  if (/\/groups\/[^/]+\/expenses\/[^/]+\/edit$/.test(pathname)) {
+    return "Editar despesa";
+  }
+
+  if (/\/groups\/[^/]+\/expenses\/[^/]+$/.test(pathname)) {
+    return "Detalhes da despesa";
+  }
+
+  if (/\/groups\/[^/]+\/expenses$/.test(pathname)) {
+    return "Despesas";
+  }
+
+  return null;
+}
+
 export function getRouteTitle(pathname: string) {
   const fallbackSegment = pathname.split("/").filter(Boolean).at(-1);
+  const dynamicTitle = getDynamicRouteTitle(pathname);
 
   return (
     routeTitles[pathname] ??
+    dynamicTitle ??
     (fallbackSegment ? humanizeSegment(fallbackSegment) : "Split-Go")
   );
+}
+
+function getBreadcrumbLabel(href: string, segment: string) {
+  if (routeTitles[href]) {
+    return routeTitles[href];
+  }
+
+  if (/\/groups\/[^/]+\/expenses$/.test(href)) {
+    return "Despesas";
+  }
+
+  if (/\/groups\/[^/]+\/expenses\/new$/.test(href)) {
+    return "Nova despesa";
+  }
+
+  if (/\/groups\/[^/]+\/expenses\/[^/]+\/edit$/.test(href)) {
+    return "Editar despesa";
+  }
+
+  if (/\/groups\/[^/]+\/expenses\/[^/]+$/.test(href)) {
+    return "Detalhes da despesa";
+  }
+
+  return humanizeSegment(segment);
 }
 
 export function getBreadcrumbItems(pathname: string) {
@@ -91,7 +137,7 @@ export function getBreadcrumbItems(pathname: string) {
     const href = `/${segments.slice(0, index + 1).join("/")}`;
 
     return {
-      label: routeTitles[href] ?? humanizeSegment(segment),
+      label: getBreadcrumbLabel(href, segment),
       href: index === segments.length - 1 ? undefined : href,
     };
   });

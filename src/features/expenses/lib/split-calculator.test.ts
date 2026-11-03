@@ -3,7 +3,7 @@ import {
   calculateEqualSplit,
   calculateFixedSplit,
   calculatePercentageSplit,
-  SplitCalculationError,
+  calculatePercentageSplitFromBasisPoints,
 } from "./split-calculator";
 
 const participants = (ids: string[]) =>
@@ -31,10 +31,13 @@ describe("calculateEqualSplit", () => {
     expect(result.map((share) => share.shareAmount)).toEqual([2n, 2n, 1n]);
   });
 
-  it("rejeita total insuficiente para todos os participantes", () => {
-    expect(() =>
-      calculateEqualSplit(1n, participants(["a", "b", "c"])),
-    ).toThrow(SplitCalculationError);
+  it("divide 1 centavo entre 3 participantes sem perder centavos", () => {
+    const result = calculateEqualSplit(1n, participants(["a", "b", "c"]));
+
+    expect(result.map((share) => share.shareAmount)).toEqual([1n, 0n, 0n]);
+    expect(result.reduce((total, share) => total + share.shareAmount, 0n)).toBe(
+      1n,
+    );
   });
 
   it("rejeita participantes duplicados", () => {
@@ -107,13 +110,53 @@ describe("calculatePercentageSplit", () => {
     ).toThrow("maior que zero");
   });
 
-  it("rejeita total que gere parcela zero", () => {
+  it("permite parcela zero em total de 1 centavo", () => {
+    const result = calculatePercentageSplit(1n, [
+      { userId: "a", percentage: 50 },
+      { userId: "b", percentage: 50 },
+    ]);
+
+    expect(result.map((share) => share.shareAmount)).toEqual([1n, 0n]);
+    expect(result.reduce((total, share) => total + share.shareAmount, 0n)).toBe(
+      1n,
+    );
+  });
+});
+
+describe("calculatePercentageSplitFromBasisPoints", () => {
+  it("calcula percentuais sem depender de floats", () => {
+    const result = calculatePercentageSplitFromBasisPoints(10000n, [
+      { userId: "a", basisPoints: 5000 },
+      { userId: "b", basisPoints: 3000 },
+      { userId: "c", basisPoints: 2000 },
+    ]);
+
+    expect(result).toEqual([
+      { userId: "a", shareAmount: 5000n, percentage: 50 },
+      { userId: "b", shareAmount: 3000n, percentage: 30 },
+      { userId: "c", shareAmount: 2000n, percentage: 20 },
+    ]);
+  });
+
+  it("distribui centavos residuais", () => {
+    const result = calculatePercentageSplitFromBasisPoints(100n, [
+      { userId: "a", basisPoints: 3333 },
+      { userId: "b", basisPoints: 3333 },
+      { userId: "c", basisPoints: 3334 },
+    ]);
+
+    expect(result.reduce((total, share) => total + share.shareAmount, 0n)).toBe(
+      100n,
+    );
+  });
+
+  it("rejeita soma diferente de 10000 basis points", () => {
     expect(() =>
-      calculatePercentageSplit(1n, [
-        { userId: "a", percentage: 50 },
-        { userId: "b", percentage: 50 },
+      calculatePercentageSplitFromBasisPoints(100n, [
+        { userId: "a", basisPoints: 5000 },
+        { userId: "b", basisPoints: 4000 },
       ]),
-    ).toThrow("parcelas positivas");
+    ).toThrow("exatamente 100%");
   });
 });
 

@@ -44,8 +44,8 @@ export const expenseSplits = pgTable(
     ),
     index("expense_splits_user_id_idx").on(table.userId),
     check(
-      "expense_splits_share_amount_positive_check",
-      sql`${table.shareAmount} > 0`,
+      "expense_splits_share_amount_non_negative_check",
+      sql`${table.shareAmount} >= 0`,
     ),
     check(
       "expense_splits_percentage_range_check",

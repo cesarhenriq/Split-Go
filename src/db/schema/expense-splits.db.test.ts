@@ -77,6 +77,7 @@ async function insertExpense(
     .values({
       groupId: data.groupId,
       paidBy: data.aliceId,
+      createdBy: data.aliceId,
       description: "Dinner",
       totalAmount,
       expenseDate: new Date("2026-01-01"),
@@ -144,6 +145,7 @@ describe("expense split integrity trigger", () => {
           .values({
             groupId: data.groupId,
             paidBy: data.aliceId,
+            createdBy: data.aliceId,
             description: "Dinner",
             totalAmount: 100n,
             splitMethod: "PERCENTAGE",

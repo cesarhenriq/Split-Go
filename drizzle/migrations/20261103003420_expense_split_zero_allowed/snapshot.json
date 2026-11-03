@@ -1,0 +1,66 @@
+{
+  "type": "diff",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "5117526c-c62f-4f35-a141-4cc8f9c8a433",
+  "prevIds": [
+    "6e28127e-3365-415a-9e4f-5c873eb866ae"
+  ],
+  "footprints": [
+    {
+      "statementType": "rename_constraint",
+      "statementTarget": [
+        "table",
+        "public",
+        "expense_splits"
+      ],
+      "writes": [
+        "s|ck|public.expense_splits.expense_splits_share_amount_positive_check",
+        "n|ck|public.expense_splits.expense_splits_share_amount_positive_check",
+        "n|con|public.expense_splits.expense_splits_share_amount_positive_check",
+        "s|ck|public.expense_splits.expense_splits_share_amount_non_negative_check",
+        "n|ck|public.expense_splits.expense_splits_share_amount_non_negative_check",
+        "n|con|public.expense_splits.expense_splits_share_amount_non_negative_check"
+      ],
+      "reads": [
+        "n|tbl|public.expense_splits",
+        "n|sch|public",
+        "e|col|public.expense_splits.share_amount"
+      ]
+    },
+    {
+      "statementType": "alter_check",
+      "statementTarget": [
+        "table",
+        "public",
+        "expense_splits"
+      ],
+      "writes": [
+        "s|ck|public.expense_splits.expense_splits_share_amount_non_negative_check"
+      ],
+      "reads": [
+        "n|tbl|public.expense_splits",
+        "n|sch|public",
+        "n|col|public.expense_splits.share_amount",
+        "e|col|public.expense_splits.share_amount"
+      ],
+      "sqlHash": "c2bccad89456a771"
+    }
+  ],
+  "deltas": [
+    {
+      "op": "rename",
+      "key": "checks\u0000[\"public\",\"expense_splits\",\"expense_splits_share_amount_positive_check\"]",
+      "set": {
+        "name": "expense_splits_share_amount_non_negative_check"
+      }
+    },
+    {
+      "op": "alter",
+      "key": "checks\u0000[\"public\",\"expense_splits\",\"expense_splits_share_amount_non_negative_check\"]",
+      "set": {
+        "value": "\"share_amount\" >= 0"
+      }
+    }
+  ]
+}

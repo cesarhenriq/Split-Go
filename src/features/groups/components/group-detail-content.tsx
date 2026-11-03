@@ -1,8 +1,16 @@
-import { CalendarDays, Crown, Mail, ShieldCheck, Users } from "lucide-react";
+import {
+  CalendarDays,
+  Crown,
+  Mail,
+  Receipt,
+  ShieldCheck,
+  Users,
+} from "lucide-react";
 import { PageContainer } from "@/components/layout/page-container";
 import { PageHeader } from "@/components/layout/page-header";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { ButtonLink } from "@/components/ui/button-link";
 import {
   Card,
   CardContent,
@@ -31,6 +39,10 @@ export function GroupDetailContent({ group }: { group: GroupDetail }) {
         }
         action={
           <div className="flex flex-wrap items-start justify-end gap-2">
+            <ButtonLink href={`/groups/${group.id}/expenses`} variant="outline">
+              <Receipt className="h-4 w-4" aria-hidden="true" />
+              Despesas
+            </ButtonLink>
             {isAdmin && <EditGroupDialog group={group} />}
             {isAdmin && <InviteMembersDialog groupId={group.id} />}
             <LeaveGroupButton groupId={group.id} isAdmin={isAdmin} />

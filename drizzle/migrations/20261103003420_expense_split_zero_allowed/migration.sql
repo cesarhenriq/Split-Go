@@ -1,0 +1,2 @@
+ALTER TABLE "expense_splits" RENAME CONSTRAINT "expense_splits_share_amount_positive_check" TO "expense_splits_share_amount_non_negative_check";--> statement-breakpoint
+ALTER TABLE "expense_splits" DROP CONSTRAINT "expense_splits_share_amount_non_negative_check", ADD CONSTRAINT "expense_splits_share_amount_non_negative_check" CHECK ("share_amount" >= 0);
