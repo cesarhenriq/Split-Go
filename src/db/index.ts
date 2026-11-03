@@ -11,6 +11,11 @@ function createDatabase() {
     max: getPoolMax(),
     idleTimeoutMillis: 30_000,
     connectionTimeoutMillis: 10_000,
+    allowExitOnIdle: true,
+  });
+
+  pool.on("error", (error) => {
+    console.error("Unexpected PostgreSQL pool error", error);
   });
 
   return drizzle({ client: pool, relations });
