@@ -3,6 +3,7 @@ export * from "./expenses";
 export * from "./group-invitations";
 export * from "./group-members";
 export * from "./groups";
+export * from "./rate-limits";
 export * from "./sessions";
 export * from "./settlements";
 export * from "./users";

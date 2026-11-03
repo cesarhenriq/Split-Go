@@ -1,7 +1,7 @@
 "use client";
 
 import { Check, X } from "lucide-react";
-import { useActionState } from "react";
+import { useActionState, useTransition } from "react";
 import { FormAlert } from "@/components/feedback/form-alert";
 import { Button } from "@/components/ui/button";
 import { respondInvitationAction } from "@/features/invitations/actions";
@@ -16,12 +16,15 @@ export function InvitationActions({ invitationId }: InvitationActionsProps) {
     respondInvitationAction,
     initialInvitationActionState,
   );
+  const [isPending, startTransition] = useTransition();
 
   function respond(decision: "accept" | "decline") {
     const formData = new FormData();
     formData.set("invitationId", invitationId);
     formData.set("decision", decision);
-    action(formData);
+    startTransition(() => {
+      action(formData);
+    });
   }
 
   return (
@@ -30,7 +33,7 @@ export function InvitationActions({ invitationId }: InvitationActionsProps) {
         <Button
           type="button"
           size="sm"
-          loading={pending}
+          loading={pending || isPending}
           onClick={() => respond("accept")}
         >
           <Check className="h-4 w-4" aria-hidden="true" />
@@ -40,7 +43,7 @@ export function InvitationActions({ invitationId }: InvitationActionsProps) {
           type="button"
           size="sm"
           variant="outline"
-          disabled={pending}
+          disabled={pending || isPending}
           onClick={() => respond("decline")}
         >
           <X className="h-4 w-4" aria-hidden="true" />

@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { groupMembers } from "@/db/schema";
 import type { Database } from "@/db/types";
@@ -36,7 +36,7 @@ export async function leaveGroup(
 
     await tx
       .update(groupMembers)
-      .set({ leftAt: new Date() })
+      .set({ leftAt: sql`now()` })
       .where(eq(groupMembers.id, membership.id));
   });
 }
