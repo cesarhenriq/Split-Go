@@ -1,18 +1,19 @@
 import "dotenv/config";
 import { drizzle } from "drizzle-orm/node-postgres";
+import pg from "pg";
+import { getDatabaseUrl, getPoolMax } from "@/lib/env";
 import { relations } from "./relations";
 import * as schema from "./schema";
 
-const connectionString = process.env.DATABASE_URL;
-
-if (!connectionString) {
-  throw new Error("DATABASE_URL is not defined");
-}
-
-const databaseUrl = connectionString;
-
 function createDatabase() {
-  return drizzle(databaseUrl, { relations });
+  const pool = new pg.Pool({
+    connectionString: getDatabaseUrl(),
+    max: getPoolMax(),
+    idleTimeoutMillis: 30_000,
+    connectionTimeoutMillis: 10_000,
+  });
+
+  return drizzle({ client: pool, relations });
 }
 
 const globalForDatabase = globalThis as unknown as {
