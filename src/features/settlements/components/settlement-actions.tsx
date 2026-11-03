@@ -1,7 +1,7 @@
 "use client";
 
 import { Ban, Check } from "lucide-react";
-import { useActionState, useState } from "react";
+import { useActionState, useState, useTransition } from "react";
 import { ConfirmDialog } from "@/components/feedback/confirm-dialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -63,13 +63,16 @@ function ConfirmSettlementButton({
     confirmSettlementAction,
     initialSettlementActionState,
   );
+  const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
 
   function runConfirm() {
     const formData = new FormData();
     formData.set("groupId", groupId);
     formData.set("settlementId", settlementId);
-    action(formData);
+    startTransition(() => {
+      action(formData);
+    });
   }
 
   return (
@@ -96,7 +99,7 @@ function ConfirmSettlementButton({
         description={`${payerName} informou um pagamento de ${amountLabel}. Você confirma que recebeu esse valor? Esta ação atualiza os saldos do grupo.`}
         confirmLabel="Confirmar recebimento"
         cancelLabel="Agora não"
-        loading={pending}
+        loading={pending || isPending}
         onConfirm={runConfirm}
       />
     </div>
@@ -114,13 +117,16 @@ function CancelSettlementButton({
     cancelSettlementAction,
     initialSettlementActionState,
   );
+  const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
 
   function runCancel() {
     const formData = new FormData();
     formData.set("groupId", groupId);
     formData.set("settlementId", settlementId);
-    action(formData);
+    startTransition(() => {
+      action(formData);
+    });
   }
 
   return (
@@ -153,7 +159,7 @@ function CancelSettlementButton({
         confirmLabel="Cancelar pagamento"
         cancelLabel="Voltar"
         tone="danger"
-        loading={pending}
+        loading={pending || isPending}
         onConfirm={runCancel}
       />
     </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { LogOut } from "lucide-react";
-import { useActionState, useState } from "react";
+import { useActionState, useState, useTransition } from "react";
 import { ConfirmDialog } from "@/components/feedback/confirm-dialog";
 import { Button } from "@/components/ui/button";
 import { leaveGroupAction } from "@/features/groups/actions";
@@ -18,11 +18,14 @@ export function LeaveGroupButton({ groupId, isAdmin }: LeaveGroupButtonProps) {
     initialGroupActionState,
   );
   const [open, setOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   function runLeave() {
     const formData = new FormData();
     formData.set("groupId", groupId);
-    action(formData);
+    startTransition(() => {
+      action(formData);
+    });
   }
 
   return (
@@ -57,7 +60,7 @@ export function LeaveGroupButton({ groupId, isAdmin }: LeaveGroupButtonProps) {
         }
         confirmLabel="Sair do grupo"
         tone="danger"
-        loading={pending}
+        loading={pending || isPending}
         onConfirm={runLeave}
       />
     </div>

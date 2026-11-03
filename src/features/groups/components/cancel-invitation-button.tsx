@@ -1,7 +1,7 @@
 "use client";
 
 import { X } from "lucide-react";
-import { useActionState, useState } from "react";
+import { useActionState, useState, useTransition } from "react";
 import { ConfirmDialog } from "@/components/feedback/confirm-dialog";
 import { Button } from "@/components/ui/button";
 import { cancelInvitationAction } from "@/features/groups/actions";
@@ -23,12 +23,15 @@ export function CancelInvitationButton({
     initialGroupActionState,
   );
   const [open, setOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   function runCancel() {
     const formData = new FormData();
     formData.set("groupId", groupId);
     formData.set("invitationId", invitationId);
-    action(formData);
+    startTransition(() => {
+      action(formData);
+    });
   }
 
   return (
@@ -58,7 +61,7 @@ export function CancelInvitationButton({
         confirmLabel="Cancelar convite"
         cancelLabel="Voltar"
         tone="danger"
-        loading={pending}
+        loading={pending || isPending}
         onConfirm={runCancel}
       />
     </div>
