@@ -12,6 +12,8 @@ export type GroupBalancesView = {
   totalOwed: bigint;
   totalToReceive: bigint;
   totalToPay: bigint;
+  totalSent: bigint;
+  totalReceived: bigint;
   totalSuggested: bigint;
   creditorsCount: number;
   debtorsCount: number;

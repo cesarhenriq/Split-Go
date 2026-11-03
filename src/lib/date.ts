@@ -8,7 +8,15 @@ const dateTimeFormatter = new Intl.DateTimeFormat("pt-BR", {
 });
 
 function toDate(value: string | Date) {
-  return value instanceof Date ? value : new Date(value);
+  if (value instanceof Date) {
+    return value;
+  }
+
+  if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return new Date(`${value}T12:00:00`);
+  }
+
+  return new Date(value);
 }
 
 export function formatDate(value: string | Date | null | undefined) {

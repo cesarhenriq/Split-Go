@@ -1,6 +1,6 @@
-import { and, eq } from "drizzle-orm";
+import { and, eq, inArray, sql } from "drizzle-orm";
 import { db } from "@/db";
-import { expenses } from "@/db/schema";
+import { expenses, settlements } from "@/db/schema";
 import type { Database } from "@/db/types";
 import {
   canManageExpense,
@@ -10,6 +10,7 @@ import {
   GroupAccessError,
   lockActiveGroupMembership,
 } from "@/features/groups/server/group-access";
+import { lockGroupForFinancialMutation } from "@/features/groups/server/group-locks";
 
 export async function cancelExpense(
   groupId: string,
@@ -18,6 +19,26 @@ export async function cancelExpense(
   database: Database = db,
 ): Promise<void> {
   await database.transaction(async (tx) => {
+    await lockGroupForFinancialMutation(tx, groupId);
+
+    const [activeSettlement] = await tx
+      .select({ id: settlements.id })
+      .from(settlements)
+      .where(
+        and(
+          eq(settlements.groupId, groupId),
+          inArray(settlements.status, ["PENDING", "CONFIRMED"]),
+        ),
+      )
+      .limit(1);
+
+    if (activeSettlement) {
+      throw new ExpenseDomainError(
+        "EXPENSE_HAS_SETTLEMENTS",
+        "Despesas não podem ser canceladas enquanto houver pagamentos pendentes ou confirmados no grupo.",
+      );
+    }
+
     const membership = await lockActiveGroupMembership(tx, groupId, actorId);
 
     if (!membership) {
@@ -62,7 +83,7 @@ export async function cancelExpense(
     await tx
       .update(expenses)
       .set({
-        cancelledAt: new Date(),
+        cancelledAt: sql`now()`,
         cancelledBy: actorId,
       })
       .where(eq(expenses.id, expenseId));

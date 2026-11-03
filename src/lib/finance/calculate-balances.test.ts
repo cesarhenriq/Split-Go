@@ -1,7 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { calculateGroupBalances } from "./calculate-balances";
 import { FinanceIntegrityError } from "./finance-errors";
-import type { BalanceExpenseInput, BalanceMemberInput } from "./finance-types";
+import type {
+  BalanceExpenseInput,
+  BalanceMemberInput,
+  BalanceSettlementInput,
+} from "./finance-types";
 
 const members: BalanceMemberInput[] = [
   {
@@ -37,6 +41,19 @@ function expense(
       { userId: "b", shareAmount: 10000n },
       { userId: "c", shareAmount: 10000n },
     ],
+    ...overrides,
+  };
+}
+
+function settlement(
+  overrides: Partial<BalanceSettlementInput> = {},
+): BalanceSettlementInput {
+  return {
+    id: "settlement-1",
+    paidBy: "b",
+    receivedBy: "a",
+    amount: 10000n,
+    status: "CONFIRMED",
     ...overrides,
   };
 }
@@ -188,6 +205,96 @@ describe("calculateGroupBalances", () => {
         ],
         members,
       ),
+    ).toThrow(FinanceIntegrityError);
+  });
+
+  it("ignora pagamentos pendentes e cancelados", () => {
+    const pending = calculateGroupBalances([expense()], members, [
+      settlement({ status: "PENDING" }),
+    ]);
+    const cancelled = calculateGroupBalances([expense()], members, [
+      settlement({ status: "CANCELLED" }),
+    ]);
+
+    expect(pending.find((item) => item.userId === "b")?.balance).toBe(-10000n);
+    expect(pending.find((item) => item.userId === "b")?.totalSent).toBe(0n);
+    expect(cancelled.find((item) => item.userId === "a")?.balance).toBe(20000n);
+    expect(cancelled.find((item) => item.userId === "a")?.totalReceived).toBe(
+      0n,
+    );
+  });
+
+  it("aplica pagamento confirmado reduzindo dívida e crédito", () => {
+    const balances = calculateGroupBalances([expense()], members, [
+      settlement(),
+    ]);
+
+    expect(balances.find((item) => item.userId === "a")).toEqual(
+      expect.objectContaining({
+        totalPaid: 30000n,
+        totalOwed: 10000n,
+        totalSent: 0n,
+        totalReceived: 10000n,
+        balance: 10000n,
+      }),
+    );
+    expect(balances.find((item) => item.userId === "b")).toEqual(
+      expect.objectContaining({
+        totalPaid: 0n,
+        totalOwed: 10000n,
+        totalSent: 10000n,
+        totalReceived: 0n,
+        balance: 0n,
+      }),
+    );
+    expect(balances.find((item) => item.userId === "c")?.balance).toBe(-10000n);
+    expect(balances.reduce((total, item) => total + item.balance, 0n)).toBe(0n);
+  });
+
+  it("soma pagamentos parciais até a quitação", () => {
+    const balances = calculateGroupBalances([expense()], members, [
+      settlement({ id: "settlement-1", amount: 4000n }),
+      settlement({ id: "settlement-2", amount: 6000n }),
+    ]);
+
+    expect(balances.find((item) => item.userId === "a")?.balance).toBe(10000n);
+    expect(balances.find((item) => item.userId === "b")?.balance).toBe(0n);
+    expect(balances.find((item) => item.userId === "b")?.totalSent).toBe(
+      10000n,
+    );
+  });
+
+  it("preserva centavos em pagamentos", () => {
+    const balances = calculateGroupBalances([expense()], members, [
+      settlement({ amount: 3333n }),
+    ]);
+
+    expect(balances.find((item) => item.userId === "a")?.balance).toBe(16667n);
+    expect(balances.find((item) => item.userId === "b")?.balance).toBe(-6667n);
+    expect(balances.reduce((total, item) => total + item.balance, 0n)).toBe(0n);
+  });
+
+  it("rejeita pagamento confirmado com valor inválido", () => {
+    expect(() =>
+      calculateGroupBalances([expense()], members, [
+        settlement({ amount: 0n }),
+      ]),
+    ).toThrow(FinanceIntegrityError);
+  });
+
+  it("rejeita pagamento confirmado entre a mesma pessoa", () => {
+    expect(() =>
+      calculateGroupBalances([expense()], members, [
+        settlement({ receivedBy: "b" }),
+      ]),
+    ).toThrow(FinanceIntegrityError);
+  });
+
+  it("rejeita pagamento confirmado com integrante ausente", () => {
+    expect(() =>
+      calculateGroupBalances([expense()], members, [
+        settlement({ receivedBy: "desconhecido" }),
+      ]),
     ).toThrow(FinanceIntegrityError);
   });
 });

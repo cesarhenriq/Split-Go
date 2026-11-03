@@ -113,6 +113,11 @@ async function GroupBalancesLoader({ groupId }: { groupId: string }) {
           <SettlementPlan
             suggestions={view.suggestions}
             totalSuggested={view.totalSuggested}
+            groupId={groupId}
+            currentUserId={user.id}
+            activeUserIds={view.members
+              .filter((member) => member.isActiveMember)
+              .map((member) => member.userId)}
           />
         </>
       )}

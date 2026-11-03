@@ -32,6 +32,8 @@ export function MemberBalanceList({ members }: { members: MemberBalance[] }) {
                 <th className="px-3 py-2 text-right font-medium">
                   Deveria assumir
                 </th>
+                <th className="px-3 py-2 text-right font-medium">Enviado</th>
+                <th className="px-3 py-2 text-right font-medium">Recebido</th>
                 <th className="px-3 py-2 text-right font-medium">Saldo</th>
               </tr>
             </thead>
@@ -54,6 +56,12 @@ export function MemberBalanceList({ members }: { members: MemberBalance[] }) {
                   </td>
                   <td className="px-3 py-3 text-right">
                     {formatCents(member.totalOwed)}
+                  </td>
+                  <td className="px-3 py-3 text-right">
+                    {formatCents(member.totalSent)}
+                  </td>
+                  <td className="px-3 py-3 text-right">
+                    {formatCents(member.totalReceived)}
                   </td>
                   <td
                     className={

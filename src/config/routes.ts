@@ -76,6 +76,30 @@ function humanizeSegment(segment: string) {
 }
 
 function getDynamicRouteTitle(pathname: string) {
+  if (/\/groups\/[^/]+\/dashboard$/.test(pathname)) {
+    return "Painel financeiro";
+  }
+
+  if (/\/groups\/[^/]+\/statement$/.test(pathname)) {
+    return "Extrato individual";
+  }
+
+  if (/\/groups\/[^/]+\/settlements\/pending$/.test(pathname)) {
+    return "Pagamentos pendentes";
+  }
+
+  if (/\/groups\/[^/]+\/settlements\/new$/.test(pathname)) {
+    return "Registrar pagamento";
+  }
+
+  if (/\/groups\/[^/]+\/settlements\/[^/]+$/.test(pathname)) {
+    return "Detalhes do pagamento";
+  }
+
+  if (/\/groups\/[^/]+\/settlements$/.test(pathname)) {
+    return "Histórico de pagamentos";
+  }
+
   if (/\/groups\/[^/]+\/expenses\/new$/.test(pathname)) {
     return "Nova despesa";
   }
@@ -113,6 +137,30 @@ export function getRouteTitle(pathname: string) {
 function getBreadcrumbLabel(href: string, segment: string) {
   if (routeTitles[href]) {
     return routeTitles[href];
+  }
+
+  if (/\/groups\/[^/]+\/dashboard$/.test(href)) {
+    return "Painel financeiro";
+  }
+
+  if (/\/groups\/[^/]+\/statement$/.test(href)) {
+    return "Extrato individual";
+  }
+
+  if (/\/groups\/[^/]+\/settlements\/pending$/.test(href)) {
+    return "Pagamentos pendentes";
+  }
+
+  if (/\/groups\/[^/]+\/settlements\/new$/.test(href)) {
+    return "Registrar pagamento";
+  }
+
+  if (/\/groups\/[^/]+\/settlements\/[^/]+$/.test(href)) {
+    return "Detalhes do pagamento";
+  }
+
+  if (/\/groups\/[^/]+\/settlements$/.test(href)) {
+    return "Histórico de pagamentos";
   }
 
   if (/\/groups\/[^/]+\/expenses$/.test(href)) {

@@ -1,4 +1,4 @@
-import { and, eq, isNull } from "drizzle-orm";
+import { and, eq, isNull, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { groupInvitations, groupMembers } from "@/db/schema";
 import type { Database } from "@/db/types";
@@ -71,7 +71,7 @@ export async function respondToInvitation(
         .update(groupInvitations)
         .set({
           status: "DECLINED",
-          respondedAt: now,
+          respondedAt: sql`now()`,
         })
         .where(eq(groupInvitations.id, invitation.id));
 
@@ -112,7 +112,7 @@ export async function respondToInvitation(
         .set({
           role: "MEMBER",
           status: "ACCEPTED",
-          joinedAt: now,
+          joinedAt: sql`now()`,
           leftAt: null,
         })
         .where(eq(groupMembers.id, existingMembership.id));
@@ -122,7 +122,7 @@ export async function respondToInvitation(
         userId: input.userId,
         role: "MEMBER",
         status: "ACCEPTED",
-        joinedAt: now,
+        joinedAt: sql`now()`,
       });
     }
 
@@ -130,7 +130,7 @@ export async function respondToInvitation(
       .update(groupInvitations)
       .set({
         status: "ACCEPTED",
-        respondedAt: now,
+        respondedAt: sql`now()`,
       })
       .where(
         and(

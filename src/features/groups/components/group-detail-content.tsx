@@ -3,9 +3,9 @@ import {
   Crown,
   Mail,
   Receipt,
-  Scale,
   ShieldCheck,
   Users,
+  Wallet,
 } from "lucide-react";
 import { PageContainer } from "@/components/layout/page-container";
 import { PageHeader } from "@/components/layout/page-header";
@@ -40,9 +40,12 @@ export function GroupDetailContent({ group }: { group: GroupDetail }) {
         }
         action={
           <div className="flex flex-wrap items-start justify-end gap-2">
-            <ButtonLink href={`/groups/${group.id}/balances`} variant="outline">
-              <Scale className="h-4 w-4" aria-hidden="true" />
-              Saldos
+            <ButtonLink
+              href={`/groups/${group.id}/dashboard`}
+              variant="outline"
+            >
+              <Wallet className="h-4 w-4" aria-hidden="true" />
+              Financeiro
             </ButtonLink>
             <ButtonLink href={`/groups/${group.id}/expenses`} variant="outline">
               <Receipt className="h-4 w-4" aria-hidden="true" />

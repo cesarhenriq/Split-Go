@@ -12,6 +12,8 @@ function member(userId: string, name: string, balance: bigint): MemberBalance {
     isActiveMember: true,
     totalPaid: balance > 0n ? balance : 0n,
     totalOwed: balance < 0n ? -balance : 0n,
+    totalSent: 0n,
+    totalReceived: 0n,
     balance,
   };
 }

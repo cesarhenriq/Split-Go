@@ -8,6 +8,7 @@ import {
   GroupAccessError,
   lockActiveGroupMembership,
 } from "@/features/groups/server/group-access";
+import { lockGroupForFinancialMutation } from "@/features/groups/server/group-locks";
 
 export type CreateExpenseInput = {
   groupId: string;
@@ -27,6 +28,8 @@ export async function createExpense(
   const participantIds = shares.map((share) => share.userId);
 
   return database.transaction(async (tx) => {
+    await lockGroupForFinancialMutation(tx, input.groupId);
+
     const membership = await lockActiveGroupMembership(
       tx,
       input.groupId,

@@ -1,6 +1,6 @@
-import { and, eq } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
 import { db } from "@/db";
-import { expenseSplits, expenses } from "@/db/schema";
+import { expenseSplits, expenses, settlements } from "@/db/schema";
 import type { Database } from "@/db/types";
 import {
   canManageExpense,
@@ -13,6 +13,7 @@ import {
   GroupAccessError,
   lockActiveGroupMembership,
 } from "@/features/groups/server/group-access";
+import { lockGroupForFinancialMutation } from "@/features/groups/server/group-locks";
 
 export type UpdateExpenseInput = {
   expenseId: string;
@@ -33,6 +34,26 @@ export async function updateExpense(
   const participantIds = shares.map((share) => share.userId);
 
   await database.transaction(async (tx) => {
+    await lockGroupForFinancialMutation(tx, input.groupId);
+
+    const [activeSettlement] = await tx
+      .select({ id: settlements.id })
+      .from(settlements)
+      .where(
+        and(
+          eq(settlements.groupId, input.groupId),
+          inArray(settlements.status, ["PENDING", "CONFIRMED"]),
+        ),
+      )
+      .limit(1);
+
+    if (activeSettlement) {
+      throw new ExpenseDomainError(
+        "EXPENSE_HAS_SETTLEMENTS",
+        "Despesas não podem ser editadas enquanto houver pagamentos pendentes ou confirmados no grupo.",
+      );
+    }
+
     const membership = await lockActiveGroupMembership(
       tx,
       input.groupId,

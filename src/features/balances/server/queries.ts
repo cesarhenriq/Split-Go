@@ -6,11 +6,14 @@ import {
   expenses,
   groupMembers,
   groups,
+  settlements,
   users,
 } from "@/db/schema";
-import type { Database } from "@/db/types";
 import type { GroupBalancesView } from "@/features/balances/types";
-import { getActiveGroupMembership } from "@/features/groups/server/group-access";
+import {
+  type GroupDatabase,
+  getActiveGroupMembership,
+} from "@/features/groups/server/group-access";
 import { calculateGroupBalances } from "@/lib/finance/calculate-balances";
 import type {
   BalanceExpenseInput,
@@ -22,7 +25,7 @@ import { simplifyDebts } from "@/lib/finance/simplify-debts";
 export async function getGroupBalancesForUser(
   groupId: string,
   userId: string,
-  database: Database = db,
+  database: GroupDatabase = db,
 ): Promise<GroupBalancesView | null> {
   const membership = await getActiveGroupMembership(database, groupId, userId);
 
@@ -71,6 +74,34 @@ export async function getGroupBalancesForUser(
     .from(expenses)
     .innerJoin(payer, eq(payer.id, expenses.paidBy))
     .where(and(eq(expenses.groupId, groupId), isNull(expenses.cancelledAt)));
+
+  const settlementPayer = alias(users, "settlement_balance_payer");
+  const settlementReceiver = alias(users, "settlement_balance_receiver");
+
+  const confirmedSettlements = await database
+    .select({
+      id: settlements.id,
+      paidBy: settlements.paidBy,
+      paidByName: settlementPayer.name,
+      paidByEmail: settlementPayer.email,
+      receivedBy: settlements.receivedBy,
+      receivedByName: settlementReceiver.name,
+      receivedByEmail: settlementReceiver.email,
+      amount: settlements.amount,
+      status: settlements.status,
+    })
+    .from(settlements)
+    .innerJoin(settlementPayer, eq(settlementPayer.id, settlements.paidBy))
+    .innerJoin(
+      settlementReceiver,
+      eq(settlementReceiver.id, settlements.receivedBy),
+    )
+    .where(
+      and(
+        eq(settlements.groupId, groupId),
+        eq(settlements.status, "CONFIRMED"),
+      ),
+    );
 
   const splitRows = await database
     .select({
@@ -127,6 +158,26 @@ export async function getGroupBalancesForUser(
     splitsByExpense.set(split.expenseId, splits);
   }
 
+  for (const settlement of confirmedSettlements) {
+    if (!memberMap.has(settlement.paidBy)) {
+      memberMap.set(settlement.paidBy, {
+        userId: settlement.paidBy,
+        name: settlement.paidByName,
+        email: settlement.paidByEmail,
+        isActiveMember: false,
+      });
+    }
+
+    if (!memberMap.has(settlement.receivedBy)) {
+      memberMap.set(settlement.receivedBy, {
+        userId: settlement.receivedBy,
+        name: settlement.receivedByName,
+        email: settlement.receivedByEmail,
+        isActiveMember: false,
+      });
+    }
+  }
+
   const balanceExpenses: BalanceExpenseInput[] = validExpenses.map(
     (expense) => ({
       id: expense.id,
@@ -137,9 +188,11 @@ export async function getGroupBalancesForUser(
     }),
   );
 
-  const members = calculateGroupBalances(balanceExpenses, [
-    ...memberMap.values(),
-  ]);
+  const members = calculateGroupBalances(
+    balanceExpenses,
+    [...memberMap.values()],
+    confirmedSettlements,
+  );
   const suggestions = simplifyDebts(members);
 
   const totalExpenses = validExpenses.reduce(
@@ -166,6 +219,14 @@ export async function getGroupBalancesForUser(
     (total, suggestion) => total + suggestion.amount,
     0n,
   );
+  const totalSent = members.reduce(
+    (total, member) => total + member.totalSent,
+    0n,
+  );
+  const totalReceived = members.reduce(
+    (total, member) => total + member.totalReceived,
+    0n,
+  );
 
   return {
     groupName: group.name,
@@ -176,6 +237,8 @@ export async function getGroupBalancesForUser(
     totalOwed,
     totalToReceive,
     totalToPay,
+    totalSent,
+    totalReceived,
     totalSuggested,
     creditorsCount: members.filter((member) => member.balance > 0n).length,
     debtorsCount: members.filter((member) => member.balance < 0n).length,

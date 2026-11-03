@@ -1,0 +1,229 @@
+{
+  "type": "diff",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "3f35a88d-3500-4a6c-896a-de89305e0d0a",
+  "prevIds": [
+    "5117526c-c62f-4f35-a141-4cc8f9c8a433"
+  ],
+  "footprints": [
+    {
+      "statementType": "add_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "settlements",
+        "cancelled_at"
+      ],
+      "writes": [
+        "s|col|public.settlements.cancelled_at",
+        "n|col|public.settlements.cancelled_at",
+        "e|col|public.settlements.cancelled_at"
+      ],
+      "reads": [
+        "n|tbl|public.settlements",
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "add_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "settlements",
+        "cancelled_by"
+      ],
+      "writes": [
+        "s|col|public.settlements.cancelled_by",
+        "n|col|public.settlements.cancelled_by",
+        "e|col|public.settlements.cancelled_by"
+      ],
+      "reads": [
+        "n|tbl|public.settlements",
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "settlements",
+        "settlements_cancelled_by_idx"
+      ],
+      "writes": [
+        "s|idx|public.settlements_cancelled_by_idx",
+        "n|idx|public.settlements_cancelled_by_idx",
+        "e|idx|public.settlements_cancelled_by_idx",
+        "n|rel|public.settlements_cancelled_by_idx"
+      ],
+      "reads": [
+        "n|tbl|public.settlements",
+        "n|sch|public",
+        "n|col|public.settlements.cancelled_by"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "settlements"
+      ],
+      "writes": [
+        "s|fk|public.settlements.settlements_cancelled_by_users_fk",
+        "n|fk|public.settlements.settlements_cancelled_by_users_fk",
+        "e|fk|public.settlements.settlements_cancelled_by_users_fk",
+        "n|con|public.settlements.settlements_cancelled_by_users_fk"
+      ],
+      "reads": [
+        "n|tbl|public.settlements",
+        "n|sch|public",
+        "n|tbl|public.users",
+        "n|sch|public",
+        "n|col|public.settlements.cancelled_by",
+        "n|col|public.users.id",
+        "e|uniqueness|public.users.id"
+      ]
+    },
+    {
+      "statementType": "add_check",
+      "statementTarget": [
+        "table",
+        "public",
+        "settlements"
+      ],
+      "writes": [
+        "s|ck|public.settlements.settlements_cancelled_consistency_check",
+        "n|ck|public.settlements.settlements_cancelled_consistency_check",
+        "e|ck|public.settlements.settlements_cancelled_consistency_check",
+        "n|con|public.settlements.settlements_cancelled_consistency_check"
+      ],
+      "reads": [
+        "n|tbl|public.settlements",
+        "n|sch|public",
+        "n|col|public.settlements.status",
+        "n|col|public.settlements.cancelled_at",
+        "n|col|public.settlements.cancelled_by"
+      ]
+    },
+    {
+      "statementType": "add_check",
+      "statementTarget": [
+        "table",
+        "public",
+        "settlements"
+      ],
+      "writes": [
+        "s|ck|public.settlements.settlements_cancelled_after_paid_check",
+        "n|ck|public.settlements.settlements_cancelled_after_paid_check",
+        "e|ck|public.settlements.settlements_cancelled_after_paid_check",
+        "n|con|public.settlements.settlements_cancelled_after_paid_check"
+      ],
+      "reads": [
+        "n|tbl|public.settlements",
+        "n|sch|public",
+        "n|col|public.settlements.cancelled_at",
+        "n|col|public.settlements.paid_at"
+      ]
+    }
+  ],
+  "deltas": [
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "settlements",
+        "name": "cancelled_at",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "settlements",
+        "name": "cancelled_by",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "settlements",
+        "name": "settlements_cancelled_by_idx",
+        "nameExplicit": true,
+        "columns": [
+          {
+            "value": "cancelled_by",
+            "isExpression": false,
+            "asc": true,
+            "nullsFirst": false,
+            "opclass": null
+          }
+        ],
+        "isUnique": false,
+        "where": null,
+        "with": "",
+        "method": "btree",
+        "concurrently": false,
+        "entityType": "indexes"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "settlements",
+        "name": "settlements_cancelled_by_users_fk",
+        "nameExplicit": true,
+        "columns": [
+          "cancelled_by"
+        ],
+        "schemaTo": "public",
+        "tableTo": "users",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "RESTRICT",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "settlements",
+        "name": "settlements_cancelled_consistency_check",
+        "value": "(\"status\" = 'CANCELLED' AND \"cancelled_at\" IS NOT NULL AND \"cancelled_by\" IS NOT NULL) OR (\"status\" <> 'CANCELLED' AND \"cancelled_at\" IS NULL AND \"cancelled_by\" IS NULL)",
+        "entityType": "checks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "settlements",
+        "name": "settlements_cancelled_after_paid_check",
+        "value": "\"cancelled_at\" IS NULL OR \"cancelled_at\" >= \"paid_at\"",
+        "entityType": "checks"
+      }
+    }
+  ]
+}

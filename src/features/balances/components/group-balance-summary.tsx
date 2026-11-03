@@ -86,6 +86,8 @@ export function GroupBalanceSummary({ view }: { view: GroupBalancesView }) {
       <p className="flex flex-wrap gap-x-6 gap-y-1 text-meta text-neutral-500">
         <span>Total pago: {formatCents(view.totalPaid)}</span>
         <span>Total devido: {formatCents(view.totalOwed)}</span>
+        <span>Enviado confirmado: {formatCents(view.totalSent)}</span>
+        <span>Recebido confirmado: {formatCents(view.totalReceived)}</span>
       </p>
     </section>
   );

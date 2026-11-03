@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import { SuccessFeedback } from "@/components/feedback/success-feedback";
+import { ButtonLink } from "@/components/ui/button-link";
 import {
   Card,
   CardContent,
@@ -13,9 +14,15 @@ import { formatCents } from "@/lib/money";
 export function SettlementPlan({
   suggestions,
   totalSuggested,
+  groupId,
+  currentUserId,
+  activeUserIds,
 }: {
   suggestions: SettlementSuggestion[];
   totalSuggested: bigint;
+  groupId?: string;
+  currentUserId?: string;
+  activeUserIds?: string[];
 }) {
   return (
     <Card>
@@ -46,9 +53,23 @@ export function SettlementPlan({
                   />
                   <span className="font-medium">{suggestion.toName}</span>
                 </div>
-                <span className="font-semibold text-primary-700">
-                  {formatCents(suggestion.amount)}
-                </span>
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="font-semibold text-primary-700">
+                    {formatCents(suggestion.amount)}
+                  </span>
+                  {groupId &&
+                    currentUserId === suggestion.fromUserId &&
+                    (!activeUserIds ||
+                      activeUserIds.includes(suggestion.toUserId)) && (
+                      <ButtonLink
+                        href={`/groups/${groupId}/settlements/new?to=${suggestion.toUserId}&amount=${suggestion.amount}`}
+                        size="sm"
+                        variant="outline"
+                      >
+                        Registrar pagamento
+                      </ButtonLink>
+                    )}
+                </div>
               </li>
             ))}
           </ul>

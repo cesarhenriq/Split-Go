@@ -2,12 +2,14 @@ import { FinanceIntegrityError } from "./finance-errors";
 import type {
   BalanceExpenseInput,
   BalanceMemberInput,
+  BalanceSettlementInput,
   MemberBalance,
 } from "./finance-types";
 
 export function calculateGroupBalances(
   expenses: BalanceExpenseInput[],
   members: BalanceMemberInput[],
+  settlements: BalanceSettlementInput[] = [],
 ): MemberBalance[] {
   const memberMap = new Map<string, MemberBalance>();
 
@@ -19,6 +21,8 @@ export function calculateGroupBalances(
       isActiveMember: member.isActiveMember,
       totalPaid: 0n,
       totalOwed: 0n,
+      totalSent: 0n,
+      totalReceived: 0n,
       balance: 0n,
     });
   }
@@ -84,9 +88,46 @@ export function calculateGroupBalances(
     payerBalance.totalPaid += expense.totalAmount;
   }
 
+  for (const settlement of settlements) {
+    if (settlement.status !== "CONFIRMED") {
+      continue;
+    }
+
+    if (settlement.amount <= 0n) {
+      throw new FinanceIntegrityError(
+        "INVALID_TOTAL",
+        "Foi encontrado um pagamento com valor inválido.",
+      );
+    }
+
+    if (settlement.paidBy === settlement.receivedBy) {
+      throw new FinanceIntegrityError(
+        "DEBT_CREDIT_MISMATCH",
+        "Foi encontrado um pagamento para a mesma pessoa.",
+      );
+    }
+
+    const payer = memberMap.get(settlement.paidBy);
+    const receiver = memberMap.get(settlement.receivedBy);
+
+    if (!payer || !receiver) {
+      throw new FinanceIntegrityError(
+        "MISSING_MEMBER",
+        "Um pagamento referencia um integrante inexistente.",
+      );
+    }
+
+    payer.totalSent += settlement.amount;
+    receiver.totalReceived += settlement.amount;
+  }
+
   const balances = [...memberMap.values()].map((member) => ({
     ...member,
-    balance: member.totalPaid - member.totalOwed,
+    balance:
+      member.totalPaid -
+      member.totalOwed +
+      member.totalSent -
+      member.totalReceived,
   }));
 
   const totalBalance = balances.reduce(

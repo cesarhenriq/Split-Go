@@ -33,6 +33,8 @@ export const settlements = pgTable(
     status: settlementStatus("status").notNull().default("PENDING"),
     paidAt: timestamp("paid_at", { withTimezone: true }).notNull(),
     confirmedAt: timestamp("confirmed_at", { withTimezone: true }),
+    cancelledAt: timestamp("cancelled_at", { withTimezone: true }),
+    cancelledBy: uuid("cancelled_by"),
     ...timestamps,
   },
   (table) => [
@@ -50,6 +52,11 @@ export const settlements = pgTable(
       columns: [table.receivedBy],
       foreignColumns: [users.id],
       name: "settlements_received_by_users_fk",
+    }).onDelete("restrict"),
+    foreignKey({
+      columns: [table.cancelledBy],
+      foreignColumns: [users.id],
+      name: "settlements_cancelled_by_users_fk",
     }).onDelete("restrict"),
     foreignKey({
       columns: [table.groupId, table.paidBy],
@@ -73,6 +80,7 @@ export const settlements = pgTable(
       table.groupId,
       table.receivedBy,
     ),
+    index("settlements_cancelled_by_idx").on(table.cancelledBy),
     check("settlements_amount_positive_check", sql`${table.amount} > 0`),
     check(
       "settlements_distinct_users_check",
@@ -85,6 +93,14 @@ export const settlements = pgTable(
     check(
       "settlements_confirmed_after_paid_check",
       sql`${table.confirmedAt} IS NULL OR ${table.confirmedAt} >= ${table.paidAt}`,
+    ),
+    check(
+      "settlements_cancelled_consistency_check",
+      sql`(${table.status} = 'CANCELLED' AND ${table.cancelledAt} IS NOT NULL AND ${table.cancelledBy} IS NOT NULL) OR (${table.status} <> 'CANCELLED' AND ${table.cancelledAt} IS NULL AND ${table.cancelledBy} IS NULL)`,
+    ),
+    check(
+      "settlements_cancelled_after_paid_check",
+      sql`${table.cancelledAt} IS NULL OR ${table.cancelledAt} >= ${table.paidAt}`,
     ),
   ],
 );

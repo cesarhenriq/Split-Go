@@ -2,6 +2,7 @@ export type ExpenseDomainErrorCode =
   | "EXPENSE_NOT_FOUND"
   | "EXPENSE_CANCELLED"
   | "EXPENSE_FORBIDDEN"
+  | "EXPENSE_HAS_SETTLEMENTS"
   | "INVALID_PARTICIPANT";
 
 export class ExpenseDomainError extends Error {

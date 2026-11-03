@@ -18,6 +18,14 @@ export type BalanceExpenseInput = {
   splits: BalanceSplitInput[];
 };
 
+export type BalanceSettlementInput = {
+  id: string;
+  paidBy: string;
+  receivedBy: string;
+  amount: bigint;
+  status: "PENDING" | "CONFIRMED" | "CANCELLED";
+};
+
 export type MemberBalance = {
   userId: string;
   name: string;
@@ -25,6 +33,8 @@ export type MemberBalance = {
   isActiveMember: boolean;
   totalPaid: bigint;
   totalOwed: bigint;
+  totalSent: bigint;
+  totalReceived: bigint;
   balance: bigint;
 };
 
