@@ -88,6 +88,16 @@ export async function inviteMembers(
         await requireGroupAdminForUpdate(tx, input.groupId, input.actorId);
         await expireOverdueInvitations(tx, input.groupId, email);
 
+        const [registeredUser] = await tx
+          .select({ id: users.id })
+          .from(users)
+          .where(eq(users.email, email))
+          .limit(1);
+
+        if (!registeredUser) {
+          return { status: "not-registered" as const };
+        }
+
         const [member] = await tx
           .select({ id: groupMembers.id })
           .from(groupMembers)
@@ -136,6 +146,16 @@ export async function inviteMembers(
 
         return { status: "created" as const, token, expiresAt };
       });
+
+      if (invitation.status === "not-registered") {
+        results.push({
+          email,
+          status: "not-registered",
+          message: "Usuário não existe no sistema.",
+          delivery: "not-configured",
+        });
+        continue;
+      }
 
       if (invitation.status === "already-member") {
         results.push({

@@ -31,6 +31,7 @@ const resultVariants: Record<
   pending: "warning",
   "already-member": "secondary",
   self: "danger",
+  "not-registered": "danger",
   error: "danger",
 };
 
@@ -39,6 +40,7 @@ const resultLabels: Record<InviteResultStatus, string> = {
   pending: "Pendente",
   "already-member": "Já é membro",
   self: "Inválido",
+  "not-registered": "Não cadastrado",
   error: "Erro",
 };
 
@@ -96,9 +98,9 @@ export function InviteMembersDialog({ groupId }: InviteMembersDialogProps) {
           <DialogHeader>
             <DialogTitle>Convidar integrantes</DialogTitle>
             <DialogDescription>
-              Digite os e-mails das pessoas que deseja convidar. O envio por
-              e-mail ainda não está configurado; os convidados verão o convite
-              em “Convites” após entrar com o e-mail correto.
+              Só é possível convidar pessoas que já possuem conta no Split-Go. O
+              envio por e-mail ainda não está configurado; os convidados verão o
+              convite em “Convites” após entrar com o e-mail correto.
             </DialogDescription>
           </DialogHeader>
 

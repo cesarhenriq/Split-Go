@@ -62,6 +62,7 @@ export type InviteResultStatus =
   | "already-member"
   | "pending"
   | "self"
+  | "not-registered"
   | "error";
 
 export type InviteDelivery = "not-configured" | "sent" | "failed";

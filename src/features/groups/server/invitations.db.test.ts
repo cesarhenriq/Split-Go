@@ -145,6 +145,25 @@ describe("invite members", () => {
     ).toHaveLength(2);
   });
 
+  it("rejeita e-mail sem usuário cadastrado", async () => {
+    const data = await setup();
+
+    const results = await inviteMembers(
+      inviteInput(data, ["naoexiste@example.com"]),
+      db,
+    );
+    const invitations = await db
+      .select()
+      .from(groupInvitations)
+      .where(eq(groupInvitations.groupId, data.groupId));
+
+    expect(results[0]).toMatchObject({
+      status: "not-registered",
+      message: "Usuário não existe no sistema.",
+    });
+    expect(invitations).toHaveLength(0);
+  });
+
   it("impede auto-convite", async () => {
     const data = await setup();
 

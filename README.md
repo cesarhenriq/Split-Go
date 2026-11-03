@@ -29,6 +29,32 @@ DIRECT_URL=postgresql://usuario:senha@localhost:5432/splitgo
 npm run db:setup
 ```
 
+## Seed de usuários
+
+Para criar usuários de demonstração que podem ser convidados:
+
+```bash
+npm run db:seed
+```
+
+Usuários criados de forma idempotente:
+
+```text
+ana@splitgo.dev
+bruno@splitgo.dev
+carla@splitgo.dev
+diego@splitgo.dev
+```
+
+Senha padrão de desenvolvimento:
+
+```text
+senha-segura-123
+```
+
+Defina `SEED_USER_PASSWORD` para usar outra senha. O script não altera usuários
+já existentes e não executa operações destrutivas.
+
 ## Comandos
 
 ```bash
@@ -40,6 +66,7 @@ npm run test:run     # testes unitários
 npm run test:db      # testes de integração com PostgreSQL
 npm run db:generate  # gera nova migration
 npm run db:migrate   # aplica migrations pendentes
+npm run db:seed      # cria usuários de demonstração
 npm run db:check     # valida o histórico de migrations
 npm run db:studio    # abre o Drizzle Studio
 ```
