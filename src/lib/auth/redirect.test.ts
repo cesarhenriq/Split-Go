@@ -6,6 +6,7 @@ describe("route protection helpers", () => {
     expect(isProtectedPath("/dashboard")).toBe(true);
     expect(isProtectedPath("/dashboard/settings")).toBe(true);
     expect(isProtectedPath("/groups/123")).toBe(true);
+    expect(isProtectedPath("/invitations")).toBe(true);
     expect(isProtectedPath("/expenses")).toBe(true);
     expect(isProtectedPath("/settlements")).toBe(true);
     expect(isProtectedPath("/settings")).toBe(true);

@@ -20,6 +20,7 @@ export const groupInvitationStatus = pgEnum("group_invitation_status", [
   "ACCEPTED",
   "DECLINED",
   "EXPIRED",
+  "CANCELLED",
 ]);
 
 export type GroupInvitationStatus =
@@ -74,7 +75,7 @@ export const groupInvitations = pgTable(
     ),
     check(
       "group_invitations_response_consistency_check",
-      sql`(${table.status} IN ('ACCEPTED', 'DECLINED') AND ${table.respondedAt} IS NOT NULL) OR (${table.status} IN ('PENDING', 'EXPIRED') AND ${table.respondedAt} IS NULL)`,
+      sql`(${table.status} IN ('ACCEPTED', 'DECLINED') AND ${table.respondedAt} IS NOT NULL) OR (${table.status} IN ('PENDING', 'EXPIRED', 'CANCELLED') AND ${table.respondedAt} IS NULL)`,
     ),
     check(
       "group_invitations_responded_after_created_check",

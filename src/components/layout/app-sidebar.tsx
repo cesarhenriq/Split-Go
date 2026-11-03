@@ -4,6 +4,7 @@ import {
   LayoutDashboard,
   LogOut,
   type LucideIcon,
+  Mail,
   Receipt,
   Settings,
   Users,
@@ -16,6 +17,7 @@ import { useEffect, useRef, useState } from "react";
 import { AppLogo } from "@/components/layout/app-logo";
 import { LogoutDialog } from "@/components/layout/logout-dialog";
 import { Avatar } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { type NavigationIcon, navigation, routes } from "@/config/routes";
@@ -26,6 +28,7 @@ import { cn } from "@/lib/utils";
 const iconMap: Record<NavigationIcon, LucideIcon> = {
   LayoutDashboard,
   Users,
+  Mail,
   Receipt,
   Wallet,
   Settings,
@@ -33,12 +36,14 @@ const iconMap: Record<NavigationIcon, LucideIcon> = {
 
 export type AppSidebarProps = {
   user: CurrentUser;
+  pendingInvitationsCount?: number;
   mobileOpen?: boolean;
   onMobileClose?: () => void;
 };
 
 export function AppSidebar({
   user,
+  pendingInvitationsCount = 0,
   mobileOpen = false,
   onMobileClose,
 }: AppSidebarProps) {
@@ -139,7 +144,15 @@ export function AppSidebar({
                   aria-current={isActive ? "page" : undefined}
                 >
                   <Icon className="h-5 w-5" aria-hidden="true" />
-                  {item.label}
+                  <span className="flex-1">{item.label}</span>
+                  {item.href === routes.dashboard.invitations &&
+                    pendingInvitationsCount > 0 && (
+                      <Badge variant="warning">
+                        {pendingInvitationsCount > 99
+                          ? "99+"
+                          : pendingInvitationsCount}
+                      </Badge>
+                    )}
                 </Link>
               </li>
             );

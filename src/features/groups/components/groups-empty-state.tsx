@@ -1,22 +1,19 @@
-import { Users } from "lucide-react";
+import { Plus, Users } from "lucide-react";
 import { EmptyState } from "@/components/feedback/empty-state";
-import { Button } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/button-link";
+import { routes } from "@/config/routes";
 
 export function GroupsEmptyState() {
   return (
     <EmptyState
       icon={Users}
       title="Nenhum grupo por aqui"
-      description="Os grupos organizam quem participa de cada divisão de despesas. A criação estará disponível na próxima etapa do projeto."
+      description="Crie seu primeiro grupo para organizar as pessoas que compartilham despesas com você."
       action={
-        <div className="flex flex-col items-center gap-2">
-          <Button type="button" disabled>
-            Novo grupo
-          </Button>
-          <span className="text-meta text-neutral-500">
-            Disponível em breve
-          </span>
-        </div>
+        <ButtonLink href={`${routes.dashboard.groups}/new`}>
+          <Plus className="h-4 w-4" aria-hidden="true" />
+          Criar grupo
+        </ButtonLink>
       }
     />
   );

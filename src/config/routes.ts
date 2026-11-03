@@ -6,6 +6,7 @@ export const routes = {
   dashboard: {
     home: "/dashboard",
     groups: "/groups",
+    invitations: "/invitations",
     expenses: "/expenses",
     settlements: "/settlements",
     settings: "/settings",
@@ -19,6 +20,11 @@ export const navigation = [
     icon: "LayoutDashboard",
   },
   { label: "Meus grupos", href: routes.dashboard.groups, icon: "Users" },
+  {
+    label: "Convites",
+    href: routes.dashboard.invitations,
+    icon: "Mail",
+  },
   { label: "Despesas", href: routes.dashboard.expenses, icon: "Receipt" },
   {
     label: "Quitações",
@@ -37,6 +43,7 @@ export type NavigationIcon = (typeof navigation)[number]["icon"];
 export const protectedRoutes = [
   routes.dashboard.home,
   routes.dashboard.groups,
+  routes.dashboard.invitations,
   routes.dashboard.expenses,
   routes.dashboard.settlements,
   routes.dashboard.settings,
@@ -45,6 +52,8 @@ export const protectedRoutes = [
 export const routeTitles: Record<string, string> = {
   [routes.dashboard.home]: "Dashboard",
   [routes.dashboard.groups]: "Meus grupos",
+  [`${routes.dashboard.groups}/new`]: "Novo grupo",
+  [routes.dashboard.invitations]: "Convites",
   [routes.dashboard.expenses]: "Despesas",
   [routes.dashboard.settlements]: "Quitações",
   [routes.dashboard.settings]: "Configurações",
@@ -52,7 +61,14 @@ export const routeTitles: Record<string, string> = {
   [routes.auth.register]: "Criar conta",
 };
 
+const uuidPattern =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
 function humanizeSegment(segment: string) {
+  if (uuidPattern.test(segment)) {
+    return "Detalhes do grupo";
+  }
+
   return segment
     .split("-")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))

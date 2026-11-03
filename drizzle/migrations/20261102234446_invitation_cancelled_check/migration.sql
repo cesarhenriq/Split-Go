@@ -1,0 +1,1 @@
+ALTER TABLE "group_invitations" DROP CONSTRAINT "group_invitations_response_consistency_check", ADD CONSTRAINT "group_invitations_response_consistency_check" CHECK (("status" IN ('ACCEPTED', 'DECLINED') AND "responded_at" IS NOT NULL) OR ("status" IN ('PENDING', 'EXPIRED', 'CANCELLED') AND "responded_at" IS NULL));

@@ -10,10 +10,15 @@ import type { CurrentUser } from "@/lib/auth/types";
 
 export type DashboardShellProps = {
   user: CurrentUser;
+  pendingInvitationsCount?: number;
   children: React.ReactNode;
 };
 
-export function DashboardShell({ user, children }: DashboardShellProps) {
+export function DashboardShell({
+  user,
+  pendingInvitationsCount = 0,
+  children,
+}: DashboardShellProps) {
   const pathname = usePathname();
   const isMobile = useIsMobile();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -36,6 +41,7 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
       <SkipLink />
       <AppSidebar
         user={user}
+        pendingInvitationsCount={pendingInvitationsCount}
         mobileOpen={mobileOpen}
         onMobileClose={closeMobile}
       />

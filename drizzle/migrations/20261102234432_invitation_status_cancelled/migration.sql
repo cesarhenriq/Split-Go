@@ -1,0 +1,1 @@
+ALTER TYPE "group_invitation_status" ADD VALUE 'CANCELLED';

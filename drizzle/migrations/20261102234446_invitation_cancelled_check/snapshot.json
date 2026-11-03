@@ -1,0 +1,40 @@
+{
+  "type": "diff",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "de71d6a2-6716-40da-8210-cfee7e04dc99",
+  "prevIds": [
+    "a3630325-2447-4a19-8964-ae71eaea7f49"
+  ],
+  "footprints": [
+    {
+      "statementType": "alter_check",
+      "statementTarget": [
+        "table",
+        "public",
+        "group_invitations"
+      ],
+      "writes": [
+        "s|ck|public.group_invitations.group_invitations_response_consistency_check"
+      ],
+      "reads": [
+        "n|tbl|public.group_invitations",
+        "n|sch|public",
+        "n|col|public.group_invitations.status",
+        "n|col|public.group_invitations.responded_at",
+        "e|col|public.group_invitations.status",
+        "e|col|public.group_invitations.responded_at"
+      ],
+      "sqlHash": "63e12025547f7984"
+    }
+  ],
+  "deltas": [
+    {
+      "op": "alter",
+      "key": "checks\u0000[\"public\",\"group_invitations\",\"group_invitations_response_consistency_check\"]",
+      "set": {
+        "value": "(\"status\" IN ('ACCEPTED', 'DECLINED') AND \"responded_at\" IS NOT NULL) OR (\"status\" IN ('PENDING', 'EXPIRED', 'CANCELLED') AND \"responded_at\" IS NULL)"
+      }
+    }
+  ]
+}
