@@ -1,0 +1,188 @@
+{
+  "type": "diff",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "c331321b-40a2-479f-9ce2-65217ec05a50",
+  "prevIds": [
+    "3f35a88d-3500-4a6c-896a-de89305e0d0a"
+  ],
+  "footprints": [
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "rate_limits"
+      ],
+      "writes": [
+        "s|tbl|public.rate_limits",
+        "n|tbl|public.rate_limits",
+        "e|tbl|public.rate_limits",
+        "n|rel|public.rate_limits",
+        "n|type|public.rate_limits",
+        "n|rel|public.rate_limits_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "rate_limits",
+        "rate_limits_reset_at_idx"
+      ],
+      "writes": [
+        "s|idx|public.rate_limits_reset_at_idx",
+        "n|idx|public.rate_limits_reset_at_idx",
+        "e|idx|public.rate_limits_reset_at_idx",
+        "n|rel|public.rate_limits_reset_at_idx"
+      ],
+      "reads": [
+        "n|tbl|public.rate_limits",
+        "n|sch|public",
+        "n|col|public.rate_limits.reset_at"
+      ]
+    }
+  ],
+  "deltas": [
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "rate_limits",
+        "isRlsEnabled": false,
+        "entityType": "tables"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "rate_limits",
+        "name": "key",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "rate_limits",
+        "name": "count",
+        "type": "integer",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "0",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "rate_limits",
+        "name": "reset_at",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "rate_limits",
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "now()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "rate_limits",
+        "name": "updated_at",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "now()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "rate_limits",
+        "name": "rate_limits_reset_at_idx",
+        "nameExplicit": true,
+        "columns": [
+          {
+            "value": "reset_at",
+            "isExpression": false,
+            "asc": true,
+            "nullsFirst": false,
+            "opclass": null
+          }
+        ],
+        "isUnique": false,
+        "where": null,
+        "with": "",
+        "method": "btree",
+        "concurrently": false,
+        "entityType": "indexes"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "rate_limits",
+        "name": "rate_limits_pkey",
+        "columns": [
+          "key"
+        ],
+        "nameExplicit": false,
+        "entityType": "pks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "rate_limits",
+        "name": "rate_limits_count_non_negative_check",
+        "value": "\"count\" >= 0",
+        "entityType": "checks"
+      }
+    }
+  ]
+}

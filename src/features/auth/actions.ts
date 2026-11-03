@@ -13,6 +13,16 @@ import {
   setSessionCookie,
 } from "@/lib/auth/cookies";
 import { createSessionForUser, deleteSessionByToken } from "@/lib/auth/session";
+import { getClientIp } from "@/lib/security/client-ip";
+import {
+  clearRateLimit,
+  consumeRateLimit,
+  hashRateLimitKey,
+} from "@/lib/security/rate-limit";
+import {
+  isRateLimitDisabled,
+  rateLimitPolicy,
+} from "@/lib/security/rate-limit-policy";
 import { loginSchema, registerSchema } from "@/lib/validation/auth";
 
 function formString(formData: FormData, key: string): string {
@@ -42,6 +52,35 @@ export async function registerAction(
       fieldErrors: parsed.error.flatten().fieldErrors,
       values,
     };
+  }
+
+  const clientIp = await getClientIp();
+  const registerLimitKey = hashRateLimitKey("register", clientIp);
+
+  if (!isRateLimitDisabled()) {
+    try {
+      const limit = await consumeRateLimit({
+        key: registerLimitKey,
+        ...rateLimitPolicy.register,
+      });
+
+      if (!limit.allowed) {
+        return {
+          status: "error",
+          message:
+            "Muitas tentativas de cadastro. Aguarde alguns minutos e tente novamente.",
+          values,
+        };
+      }
+    } catch (error) {
+      console.error("registerAction rate limit failed", error);
+
+      return {
+        status: "error",
+        message: "Não foi possível criar sua conta agora. Tente novamente.",
+        values,
+      };
+    }
   }
 
   try {
@@ -98,6 +137,38 @@ export async function loginAction(
     };
   }
 
+  const clientIp = await getClientIp();
+  const loginLimitKey = hashRateLimitKey(
+    "login",
+    `${clientIp}:${parsed.data.email}`,
+  );
+
+  if (!isRateLimitDisabled()) {
+    try {
+      const limit = await consumeRateLimit({
+        key: loginLimitKey,
+        ...rateLimitPolicy.login,
+      });
+
+      if (!limit.allowed) {
+        return {
+          status: "error",
+          message:
+            "Muitas tentativas de login. Aguarde alguns minutos e tente novamente.",
+          values,
+        };
+      }
+    } catch (error) {
+      console.error("loginAction rate limit failed", error);
+
+      return {
+        status: "error",
+        message: "Não foi possível entrar agora. Tente novamente.",
+        values,
+      };
+    }
+  }
+
   let user: Awaited<ReturnType<typeof authenticateUser>>;
 
   try {
@@ -113,6 +184,26 @@ export async function loginAction(
   }
 
   if (!user) {
+    if (!isRateLimitDisabled()) {
+      try {
+        const ipLimit = await consumeRateLimit({
+          key: hashRateLimitKey("login-ip", clientIp),
+          ...rateLimitPolicy.loginIp,
+        });
+
+        if (!ipLimit.allowed) {
+          return {
+            status: "error",
+            message:
+              "Muitas tentativas de login. Aguarde alguns minutos e tente novamente.",
+            values,
+          };
+        }
+      } catch (error) {
+        console.error("loginAction ip rate limit failed", error);
+      }
+    }
+
     return {
       status: "error",
       message: "E-mail ou senha inválidos.",
@@ -131,6 +222,14 @@ export async function loginAction(
       message: "Não foi possível entrar agora. Tente novamente.",
       values,
     };
+  }
+
+  if (!isRateLimitDisabled()) {
+    try {
+      await clearRateLimit(loginLimitKey);
+    } catch (error) {
+      console.error("loginAction rate limit reset failed", error);
+    }
   }
 
   redirect("/dashboard");

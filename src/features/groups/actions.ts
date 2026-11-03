@@ -17,6 +17,11 @@ import type {
   InviteFormState,
 } from "@/features/groups/types";
 import { requireUser } from "@/lib/auth/current-user";
+import { consumeRateLimit, hashRateLimitKey } from "@/lib/security/rate-limit";
+import {
+  isRateLimitDisabled,
+  rateLimitPolicy,
+} from "@/lib/security/rate-limit-policy";
 import {
   cancelInvitationSchema,
   groupFormSchema,
@@ -169,6 +174,30 @@ export async function inviteMembersAction(
       message: "Revise os e-mails informados.",
       fieldErrors: parsed.error.flatten().fieldErrors,
     };
+  }
+
+  if (!isRateLimitDisabled()) {
+    try {
+      const limit = await consumeRateLimit({
+        key: hashRateLimitKey("invite", user.id),
+        ...rateLimitPolicy.invite,
+      });
+
+      if (!limit.allowed) {
+        return {
+          status: "error",
+          message:
+            "Muitos convites em pouco tempo. Aguarde alguns minutos e tente novamente.",
+        };
+      }
+    } catch (error) {
+      console.error("inviteMembersAction rate limit failed", error);
+
+      return {
+        status: "error",
+        message: "Não foi possível processar os convites agora.",
+      };
+    }
   }
 
   try {
