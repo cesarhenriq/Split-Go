@@ -3,34 +3,55 @@ import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import pg from "pg";
 
-const baseUrl = process.env.DATABASE_URL;
+function resolveTestDatabaseUrl(): URL {
+  const explicit = process.env.TEST_DATABASE_URL?.trim();
 
-if (!baseUrl) {
-  throw new Error("DATABASE_URL is not defined");
+  if (explicit) {
+    return new URL(explicit);
+  }
+
+  const baseUrl = process.env.DATABASE_URL?.trim();
+
+  if (!baseUrl) {
+    throw new Error("DATABASE_URL or TEST_DATABASE_URL must be defined");
+  }
+
+  const testUrl = new URL(baseUrl);
+  testUrl.pathname = "/splitgo_test";
+
+  return testUrl;
 }
 
-const testUrl = new URL(baseUrl);
-testUrl.pathname = "/splitgo_test";
+function getDatabaseName(url: URL): string {
+  const name = decodeURIComponent(url.pathname.replace(/^\//, ""));
 
-if (!testUrl.pathname.endsWith("_test")) {
-  throw new Error("The test database name must end with _test");
+  if (!/^[A-Za-z_][A-Za-z0-9_]*_test$/.test(name)) {
+    throw new Error(
+      "The test database name must be a valid identifier ending with _test",
+    );
+  }
+
+  return name;
 }
-
-const adminUrl = new URL(baseUrl);
-adminUrl.pathname = "/postgres";
 
 async function main() {
+  const testUrl = resolveTestDatabaseUrl();
+  const databaseName = getDatabaseName(testUrl);
+  const adminUrl = new URL(testUrl.toString());
+  adminUrl.pathname = "/postgres";
+
   const admin = new pg.Client({ connectionString: adminUrl.toString() });
 
   await admin.connect();
 
   try {
     const database = await admin.query(
-      "select 1 from pg_database where datname = 'splitgo_test'",
+      "select 1 from pg_database where datname = $1",
+      [databaseName],
     );
 
     if (database.rowCount === 0) {
-      await admin.query("create database splitgo_test");
+      await admin.query(`create database "${databaseName}"`);
     }
   } finally {
     await admin.end();
@@ -66,7 +87,7 @@ async function main() {
       }
     }
 
-    console.log(`Banco de teste pronto: ${testUrl.pathname.slice(1)}`);
+    console.log(`Banco de teste pronto: ${databaseName}`);
   } finally {
     await client.end();
   }
